@@ -16,7 +16,12 @@
         <!-- 1. Header (Navbar) -->
         <header class="main-header">
             <div class="header-container">
-                <a href="index.html" class="brand-logo">
+    <!-- TAMBAHKAN TOMBOL INI (Hanya akan muncul di mobile via CSS nanti) -->
+    <button id="hamburger-menu" class="mobile-hamburger-btn">
+        <i data-lucide="menu" width="24" height="24"></i>
+    </button>
+
+    <a href="index.html" class="brand-logo">
                     <img src="assets/lapercuylogo.png" alt="LaperCuy Logo" style="height: 65px; margin-left: 70px; width: auto; object-fit: contain; border-radius: 4px;">
                 </a>
 
@@ -84,7 +89,7 @@
             <div class="footer-container">
                 <div class="footer-top">
                     <div class="footer-branding">
-                        <img src="assets/logomaroon.png" alt="LaperCuy Logo" class="footer-logo-img" style="height: 105px; margin-left: 75px; object-fit: contain; border-radius: 4px;">
+                        <img src="assets/logomaroon.png" alt="LaperCuy Logo" class="footer-logo-img" style="height: 105px; margin-left: 85px; object-fit: contain; border-radius: 4px;">
                         <span class="footer-copyright">© 2026 LaperCuy. Appetizing experiences delivered.</span>
                     </div>
                     <nav class="footer-nav">
@@ -241,6 +246,31 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="app.js?v=31.0"></script>
+
+    <!-- SIDEBAR MOBILE (Tambahkan di sini) -->
+    <div id="mobile-sidebar" class="sidebar-overlay">
+        <aside class="sidebar-content">
+            <div class="sidebar-header">
+                <img src="assets/lapercuylogo.png" alt="Logo" style="height: 80px;">
+                <button id="close-sidebar" class="close-btn">
+                    <i data-lucide="x" width="24" height="24"></i>
+                </button>
+            </div>
+            <nav class="sidebar-links">
+                <a href="index.html" class="sidebar-item active"><i data-lucide="home"></i> Beranda</a>
+                <a href="menu.html" class="sidebar-item"><i data-lucide="utensils-crossed"></i> Menu</a>
+                <a href="offers.html" class="sidebar-item"><i data-lucide="tag"></i> Offers</a>
+                <a href="orders.html" class="sidebar-item"><i data-lucide="receipt"></i> Aktivitas</a>
+                <a href="profile.html" class="sidebar-item"><i data-lucide="user"></i> Profil</a>
+            </nav>
+        </aside>
+    </div>
+
+    <!-- HAPUS ATAU KOMENTARI navigasi lama ini -->
+    <!-- <nav class="mobile-nav"> ... </nav> -->
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
 </body>
 

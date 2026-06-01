@@ -1998,3 +1998,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// --- KODE UNTUK SIDEBAR MOBILE ---
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerBtn = document.getElementById('hamburger-menu');
+    const closeBtn = document.getElementById('close-sidebar');
+    const sidebar = document.getElementById('mobile-sidebar');
+
+    if (hamburgerBtn && sidebar) {
+        hamburgerBtn.addEventListener('click', function() {
+            sidebar.classList.add('active');
+            // Mencegah scroll pada body saat menu terbuka
+            document.body.style.overflow = 'hidden'; 
+        });
+    }
+
+    if (closeBtn && sidebar) {
+        closeBtn.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            document.body.style.overflow = ''; 
+        });
+    }
+
+    // Menutup sidebar jika mengklik area hitam (overlay)
+    if (sidebar) {
+        sidebar.addEventListener('click', function(e) {
+            if (e.target === sidebar) {
+                sidebar.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    // --- LOGIKA UNTUK MENGATUR SIDEBAR ACTIVE SECARA OTOMATIS ---
+const currentPath = window.location.pathname.split("/").pop(); // Mendapatkan nama file (misal: menu.html)
+const sidebarLinks = document.querySelectorAll('.sidebar-item');
+
+sidebarLinks.forEach(link => {
+    // Ambil atribut href dari link
+    const linkHref = link.getAttribute('href');
+    
+    // Hapus dulu class active yang ada
+    link.classList.remove('active');
+    
+    // Jika href link sama dengan halaman saat ini, tambahkan class active
+    if (currentPath === linkHref) {
+        link.classList.add('active');
+    } 
+    // Kondisi khusus untuk halaman utama jika path kosong atau index.html
+    else if ((currentPath === "" || currentPath === "index.html") && linkHref === "index.html") {
+        link.classList.add('active');
+    }
+});
+});

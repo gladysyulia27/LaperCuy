@@ -321,7 +321,7 @@ body {
     font-family: var(--font-heading);
     font-size: 14px;
     font-weight: 700;
-    border-radius: 50px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     transition: var(--transition-smooth);
@@ -529,52 +529,45 @@ body {
 }
 
 .category-pill {
-    background-color: var(--clr-bg-card);
-    border: 1px solid #EDEDED;
-    border-radius: 50px;
-    padding: 10px 24px 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    cursor: pointer;
-    flex: 1;
-    transition: var(--transition-smooth);
+    background-color: #FFFFFF !important;
+    border: 2px solid #841006 !important;
+    border-radius: 50px !important;
+    padding: 12px 32px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    flex: 1 !important;
+    transition: transform var(--transition-fast) ease, background-color var(--transition-fast) ease, border-color var(--transition-fast) ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
 .category-pill:hover {
-    border-color: var(--clr-brand);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-2px);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(132, 16, 6, 0.15) !important;
 }
 
 .category-pill.active {
-    background-color: var(--clr-brand-translucent);
-    border-color: var(--clr-brand);
+    background-color: #841006 !important;
+    border-color: #841006 !important;
 }
 
 .category-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background-color: #FAF8F6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--clr-brand);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
-    transition: var(--transition-smooth);
-}
-
-.category-pill.active .category-avatar {
-    background-color: var(--clr-brand);
-    color: #FFFFFF;
+    display: none !important;
 }
 
 .category-name {
-    font-family: var(--font-heading);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--clr-text-main);
+    font-family: var(--font-heading) !important;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #1A1A1A !important;
+    transition: color var(--transition-fast) ease !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+.category-pill.active .category-name {
+    color: #FFFFFF !important;
 }
 
 /* Promos & Price Recommendation Grid */
@@ -991,20 +984,19 @@ body {
     transform: scale(1.08);
 }
 
-/* Floating Chat Bubble Button */
 .chat-float-btn {
     position: fixed;
     bottom: 40px;
     right: 40px;
-    background-color: var(--clr-brand);
-    color: #FFFFFF;
+    background-color: #CBB471 !important;
+    color: #FFFFFF !important;
     width: 56px;
     height: 56px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 8px 24px rgba(110, 11, 5, 0.4);
+    box-shadow: 0 8px 24px #CBB471;
     cursor: pointer;
     z-index: 99;
     border: none;
@@ -1012,9 +1004,9 @@ body {
 }
 
 .chat-float-btn:hover {
-    background-color: var(--clr-brand-dark);
+    background-color: #A68F4C !important;
     transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 10px 30px rgba(110, 11, 5, 0.5);
+    box-shadow: 0 10px 30px #CBB471;
 }
 
 /* Floating Chat Assistant Box */
@@ -3068,7 +3060,7 @@ body {
     border-radius: 50px;
     padding: 10px 24px;
     font-family: var(--font-heading);
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--clr-text-main);
     cursor: pointer;
@@ -3887,4 +3879,60 @@ body {
 .mobile-nav-item.active .mobile-profile-img {
     transform: scale(1.08);
     box-shadow: 0 0 0 2px var(--clr-brand);
+}
+
+/* ==========================================
+   PREMIUM CONFIRMATION BUTTON STYLE (MOCKUP)
+   ========================================== */
+#cart-checkout-btn,
+#chk-btn-confirm-pay {
+    width: 100% !important;
+    background-color: #841006 !important;
+    color: #FFFFFF !important;
+    font-family: var(--font-heading) !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    height: 52px !important;
+    border-radius: 50px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    border: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 5px 15px rgba(132, 16, 6, 0.3) !important;
+    transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease, background-color var(--transition-fast) ease !important;
+}
+
+#cart-checkout-btn:hover,
+#chk-btn-confirm-pay:hover {
+    background-color: #9c150a !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(132, 16, 6, 0.4) !important;
+}
+
+#cart-checkout-btn:active,
+#chk-btn-confirm-pay:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 3px 8px rgba(132, 16, 6, 0.25) !important;
+}
+
+#cart-checkout-btn svg,
+#chk-btn-confirm-pay svg {
+    width: 24px !important;
+    height: 24px !important;
+    stroke: #FFFFFF !important;
+    stroke-width: 2.2 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+}
+
+#cart-checkout-btn svg circle,
+#chk-btn-confirm-pay svg circle {
+    fill: none !important;
+}
+
+#cart-checkout-btn svg path,
+#chk-btn-confirm-pay svg path {
+    stroke: #FFFFFF !important;
 }

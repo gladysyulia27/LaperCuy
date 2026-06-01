@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRatingFilter = 0;
 
     // Promo discounts state
-    let activeDiscounts = JSON.parse(localStorage.getItem('activeDiscounts')) || {
+    let activeDiscounts = {
         freeClaimed: false, // Gratis 5 Menu voucher (Rp 10k off)
         codeApplied: false, // 20% off
     };

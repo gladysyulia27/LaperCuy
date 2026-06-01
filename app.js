@@ -609,11 +609,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.mobile-nav-item').forEach(item => {
             item.classList.remove('active');
         });
-        if (pageName === 'index.html') {
+        if (pageName === 'index.html' || pageName === 'menu.html' || pageName === 'offers.html' || pageName === 'checkout.html') {
             const homeBtn = document.getElementById('mobile-home-btn');
             if (homeBtn) homeBtn.classList.add('active');
         } else if (pageName === 'orders.html') {
-            const queueBtn = document.getElementById('mobile-queue-btn');
+            const queueBtn = document.getElementById('mobile-aktivitas-btn');
             if (queueBtn) queueBtn.classList.add('active');
         } else if (pageName === 'profile.html') {
             const profileBtn = document.getElementById('mobile-profile-btn');
@@ -819,7 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update hero welcome title in index.html
         const heroTitle = document.querySelector('.hero-title');
         if (heroTitle) {
-            heroTitle.textContent = `Hai ${firstName}, Selamat datang!`;
+            heroTitle.innerHTML = `<span class="hero-title-greeting">Hai ${firstName},</span> <span class="hero-title-welcome">Selamat datang!</span>`;
         }
 
         // Update modal titles

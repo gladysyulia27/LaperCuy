@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LaperCuy - Pembayaran & Checkout</title>
     <meta name="description" content="Selesaikan pembayaran Anda menggunakan metode terpercaya LaperCuy secara instan.">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=6.0">
 </head>
 
 <body>
@@ -65,7 +65,7 @@
                             <div class="checkout-items-receipt-list" id="checkout-receipt-items-container">
                                 <!-- Filled dynamically by JS -->
                             </div>
-                            
+
                             <div class="checkout-bill-card">
                                 <div class="cbill-row">
                                     <span>Subtotal</span>
@@ -105,7 +105,7 @@
                             <!-- Payment Methods list selectors -->
                             <div class="checkout-payment-methods-card">
                                 <h4 style="font-size: 13px; font-weight: 700; color: var(--clr-text-main); margin-bottom: 16px;">Metode Pembayaran</h4>
-                                
+
                                 <div class="chk-pay-options-list">
                                     <label class="chk-pay-option-label active">
                                         <input type="radio" name="chk-payment-group" value="bank" checked>
@@ -146,7 +146,7 @@
             <div class="footer-container">
                 <div class="footer-top">
                     <div class="footer-branding">
-                        <img src="assets/lapercuylogo.png" alt="LaperCuy Logo" class="footer-logo-img">
+                        <img src="assets/logomaroon.png" alt="LaperCuy Logo" class="footer-logo-img" style="height: 105px; margin-left: 75px; object-fit: contain; border-radius: 4px;">
                         <span class="footer-copyright">© 2026 LaperCuy. Appetizing experiences delivered.</span>
                     </div>
                     <nav class="footer-nav">
@@ -226,7 +226,7 @@
 
     <!-- FLOATING COMPONENT: Asisten Chat LaperCuy -->
     <button class="chat-float-btn" id="chat-toggle-btn" title="Asisten Bantuan LaperCuy">
-        <i data-lucide="message-square" width="24" height="24"></i>
+        <i data-lucide="message-square-text" width="24" height="24"></i>
     </button>
 
     <div class="chat-widget-box" id="chat-widget">
@@ -271,17 +271,15 @@
 
     <!-- PERSISTENT BOTTOM NAV: Khusus Mobile/Tablet -->
     <nav class="mobile-nav">
-        <a href="index.html" class="mobile-nav-item" id="mobile-home-btn">
-            <i data-lucide="home" width="20" height="20"></i>
-            <span>Browse</span>
+        <a href="orders.html" class="mobile-nav-item" id="mobile-aktivitas-btn">
+            <i data-lucide="receipt" width="20" height="20"></i>
+            <span>Aktivitas</span>
         </a>
-        <a href="#" class="mobile-nav-item" id="mobile-cart-btn">
-            <i data-lucide="shopping-cart" width="20" height="20"></i>
-            <span>Keranjang</span>
-        </a>
-        <a href="orders.html" class="mobile-nav-item" id="mobile-queue-btn">
-            <i data-lucide="clock" width="20" height="20"></i>
-            <span>Antrean</span>
+        <a href="index.html" class="mobile-nav-item mobile-nav-center" id="mobile-home-btn">
+            <div class="mobile-nav-center-btn">
+                <i data-lucide="home" width="24" height="24"></i>
+            </div>
+            <span>Beranda</span>
         </a>
         <a href="profile.html" class="mobile-nav-item" id="mobile-profile-btn">
             <i data-lucide="user" width="20" height="20"></i>

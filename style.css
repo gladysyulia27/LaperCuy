@@ -295,6 +295,11 @@ body {
     margin-bottom: 16px;
 }
 
+.hero-title-greeting,
+.hero-title-welcome {
+    display: inline;
+}
+
 .hero-desc {
     font-size: 14px;
     color: var(--clr-cream);
@@ -361,6 +366,14 @@ body {
     height: auto;
     filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
     animation: floatAnimation 6s ease-in-out infinite;
+}
+
+.hero-logo-img {
+    display: none;
+}
+
+.mobile-search-bar {
+    display: none;
 }
 
 @keyframes floatAnimation {
@@ -735,13 +748,13 @@ body {
     background-color: #EBEAEF;
     padding: 4px;
     border-radius: 50px;
-    gap: 4px;
+    gap: 0;
 }
 
 .tab-btn {
     background: none;
     border: none;
-    padding: 8px 18px;
+    padding: 8px 16px; /* Horizontal padding for premium breathing room */
     font-family: var(--font-heading);
     font-size: 13px;
     font-weight: 700;
@@ -749,6 +762,9 @@ body {
     border-radius: 50px;
     cursor: pointer;
     transition: var(--transition-smooth);
+    flex: 1;
+    text-align: center;
+    white-space: nowrap; /* Prevent text wrapping and overlap */
 }
 
 .tab-btn.active {
@@ -2295,56 +2311,127 @@ body {
     }
 }
 
-/* ==========================================
-     MOBILE BOTTOM NAV: Persistent Menu Styles
-     ========================================== */
+/*MOBILE BOTTOM NAV: Persistent Menu Styles*/
 .mobile-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--clr-bg-card);
-    border-top: 1px solid #EDEDED;
+    height: 76px; /* Figma Height: 76px */
+    /* Using dynamic multi-background for a snugger, mathematically perfect Concave Cutout in the center */
+    background-image: 
+        linear-gradient(to right, #841006, #841006), /* Figma Background Color */
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 76' width='120' height='76' preserveAspectRatio='none'><rect width='120' height='76' fill='%23FFFFFF'/><path d='M 0,0 H 12 C 32,0 36,51 60,51 C 84,51 88,0 108,0 H 120 V 76 H 0 Z' fill='%23841006'/></svg>"), /* Center snug curved cutout (120px width) with white mask rect */
+        linear-gradient(to right, #841006, #841006); /* Right solid block */
+    background-position: 
+        left center, 
+        center top, 
+        right center;
+    background-size: 
+        calc(50% - 58px) 100%, /* Seamless 2px overlap on the left */
+        120px 100%, 
+        calc(50% - 58px) 100%; /* Seamless 2px overlap on the right */
+    background-repeat: no-repeat;
     display: none;
-    /* Hidden by default on desktop */
     justify-content: space-around;
-    align-items: center;
-    padding: 8px 0;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+    align-items: flex-end; /* Align all navigation items at the bottom */
+    padding: 0 0 10px 0;
     z-index: 999;
+    border-radius: 18px 18px 0 0; /* Figma border-radius: 18px */
+    overflow: visible; /* Ensure floating button is not clipped */
+    /* Premium drop shadow that contours the cutout perfectly */
+    filter: drop-shadow(0 -6px 20px rgba(132, 16, 6, 0.25));
+}
+
+/* Remove old notch pseudo-element cembung */
+.mobile-nav::before {
+    display: none;
 }
 
 .mobile-nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    color: var(--clr-text-muted);
+    justify-content: flex-end;
+    gap: 5px;
+    color: rgba(255, 255, 255, 0.65);
     text-decoration: none;
-    font-size: 11px;
-    font-weight: 600;
+    font-family: 'Poppins', sans-serif; /* Poppins Font Family */
+    font-size: 12px; /* Figma Font Size: 12px */
+    font-weight: 600; /* Figma Font Weight: 600 */
+    line-height: 18px; /* Figma Line Height: 18px */
     transition: var(--transition-fast);
     flex: 1;
+    height: 48px; /* Uniform height keeps all text aligned */
+    position: relative;
 }
 
 .mobile-nav-item i {
-    color: var(--clr-text-muted);
+    width: 24px;
+    height: 24px;
+    color: rgba(255, 255, 255, 0.65);
     transition: var(--transition-fast);
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2)); /* Premium soft shadow filter matching screenshot */
 }
 
 .mobile-nav-item:hover,
 .mobile-nav-item.active {
-    color: var(--clr-brand);
+    color: #ffffff;
 }
 
+.mobile-nav-item:hover i,
 .mobile-nav-item.active i {
-    color: var(--clr-brand);
-    transform: scale(1.1);
+    color: #ffffff;
+    transform: scale(1.05);
 }
 
-/* ==========================================
-     RESPONSIVE MEDIA QUERIES
-     ========================================== */
+/* Apply premium solid fill to Home & Profile icons as in the screenshot */
+.mobile-nav-item.mobile-nav-center i,
+#mobile-profile-btn i {
+    fill: currentColor;
+}
+
+/* Render a dark open doorway inside the white home icon by styling the doorway polyline */
+.mobile-nav-item.mobile-nav-center i polyline {
+    fill: #841006; /* Figma Background Color */
+}
+
+/* Center elevated home button (floating action button) */
+.mobile-nav-item.mobile-nav-center {
+    position: relative;
+    top: 0; /* Keep the item at bottom level so the text aligns perfectly */
+    color: #ffffff;
+}
+
+.mobile-nav-item.mobile-nav-center .mobile-nav-center-btn {
+    width: 80px; /* Figma Width: 80px */
+    height: 80px; /* Figma Height: 80px */
+    border-radius: 50%;
+    background-color: #841006; /* Figma Background Color */
+    border: none; /* Removed the thick white border to match screenshot */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -58px; /* Figma Floating Offset: starts at 1163px which is -40px from top of bar */
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(132, 16, 6, 0.45); /* Figma inset shadow + drop shadow */
+    transition: var(--transition-smooth);
+}
+
+.mobile-nav-item.mobile-nav-center .mobile-nav-center-btn i {
+    width: 50px !important; /* Figma Icon Width: 50px */
+    height: 50px !important; /* Figma Icon Height: 50px */
+}
+
+.mobile-nav-item.mobile-nav-center:hover .mobile-nav-center-btn,
+.mobile-nav-item.mobile-nav-center.active .mobile-nav-center-btn {
+    transform: translateX(-50%) scale(1.08);
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25), 0 10px 28px rgba(132, 16, 6, 0.55);
+}
+
+/*RESPONSIVE MEDIA QUERIES*/
 
 /* 1. Tablet Screens (1024px or less) */
 @media (max-width: 1024px) {
@@ -2411,8 +2498,7 @@ body {
     }
 
     .header-search {
-        width: 100%;
-        max-width: 220px;
+        display: none !important;
     }
 
     .utility-actions {
@@ -2429,35 +2515,82 @@ body {
         gap: 28px;
     }
 
+    /* Mobile Hero Banner custom overrides: align vertically (Title, tagline not bold, Search Bar) */
     .hero-banner {
-        flex-direction: column-reverse;
-        text-align: center;
-        padding: 24px;
-        gap: 20px;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        padding: 24px !important;
+        background: linear-gradient(135deg, #1C0200 0%, #6E0B05 100%) !important;
+        box-shadow: var(--shadow-md) !important;
+        gap: 0 !important;
     }
 
     .hero-info {
-        max-width: 100%;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        width: 100% !important;
     }
 
     .hero-title {
-        font-size: 26px;
+        font-size: 24px !important;
+        font-weight: 800 !important;
+        color: #FFFFFF !important;
+        text-align: left !important;
+        margin-bottom: 0 !important;
+    }
+
+    .hero-title-welcome {
+        display: none !important; /* Hide "Selamat datang!" on mobile */
+    }
+
+    .hero-desc {
+        display: block !important;
+        font-size: 14px !important;
+        font-weight: 400 !important; /* Make it regular, NOT bold */
+        color: var(--clr-cream) !important;
+        opacity: 0.9 !important;
+        line-height: 1.5 !important;
+        margin-bottom: 4px !important;
+        text-align: left !important;
     }
 
     .hero-buttons {
-        justify-content: center;
+        display: none !important; /* Hide buttons on mobile */
     }
 
     .hero-visual {
-        width: 100%;
+        display: none !important; /* Hide food image on mobile */
     }
 
-    .hero-food-img {
-        max-width: 160px;
+    .mobile-search-bar {
+        display: flex !important;
+        align-items: center !important;
+        width: 100% !important;
+        background: #FFFFFF !important;
+        border: 1px solid #EAEAEA !important;
+        border-radius: 50px !important;
+        padding: 12px 20px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+        margin-top: 4px !important;
     }
 
-    .queue-card {
-        padding: 20px;
+    .mobile-search-bar .search-icon {
+        color: var(--clr-brand) !important;
+        margin-right: 10px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .mobile-search-bar .mobile-search-input {
+        border: none !important;
+        width: 100% !important;
+        font-size: 13px !important;
+        font-family: var(--font-body) !important;
+        background: transparent !important;
+        color: var(--clr-text-main) !important;
+        outline: none !important;
     }
 
     /* Swipeable category list on mobile devices */
@@ -2526,6 +2659,30 @@ body {
         display: flex;
     }
 
+    /* Reposition and style the floating assistant button for mobile as in the screenshot */
+    .chat-float-btn {
+        bottom: 92px; /* Float elegantly above the 72px mobile navigation bar */
+        right: 20px;
+        background-color: #CEB271; /* Premium gold accent color matching screenshot */
+        width: 52px;
+        height: 52px;
+        box-shadow: 0 6px 20px rgba(110, 11, 5, 0.2);
+    }
+    
+    .chat-float-btn i {
+        width: 20px;
+        height: 20px;
+        color: #FFFFFF;
+    }
+
+    /* Reposition the assistant widget box nicely for mobile viewport */
+    .chat-widget-box {
+        bottom: 156px; /* Positioned nicely above the new gold chat button */
+        right: 20px;
+        width: calc(100% - 40px);
+        max-width: 340px;
+    }
+
     /* Sub-pages mobile overrides */
     .offers-grid-custom {
         grid-template-columns: 1fr;
@@ -2553,6 +2710,21 @@ body {
     .stepper-node-item .stepper-label-text {
         font-size: 9px;
     }
+
+    /* Jelajahi Menu Terlaris: stack title/desc then tabs vertically */
+    .section-head {
+        flex-direction: column;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 12px;
+    }
+
+    .section-head .filter-tabs {
+        width: 100%;
+        justify-content: center !important;
+        max-width: 350px; /* Increased width to prevent button text crowding on smaller screens */
+        margin: 0 auto;
+    }
 }
 
 /* 3. Small Smartphones (480px or less) */
@@ -2571,9 +2743,7 @@ body {
     }
 }
 
-/* ==========================================================
-   SERING DIPESAN & REKOMENDASI HARGA SECTIONS
-   ========================================================== */
+/*SERING DIPESAN & REKOMENDASI HARGA SECTIONS*/
 .frequent-section {
     display: flex;
     flex-direction: column;
@@ -2768,21 +2938,22 @@ body {
     box-shadow: 0 4px 12px rgba(110, 11, 5, 0.2);
 }
 
-/* ==========================================================
-   CATEGORIES WITH IMAGES LOGOUT (index.html)
-   ========================================================== */
+/*CATEGORIES WITH IMAGES LOGOUT*/
 .categories-images-container {
     display: flex;
     gap: 20px;
     overflow-x: auto;
     padding: 8px 4px 16px 4px;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+    scrollbar-width: none;
+    /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    /* Hide scrollbar for IE/Edge */
 }
 
 .categories-images-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome/Safari */
+    display: none;
+    /* Hide scrollbar for Chrome/Safari */
 }
 
 .category-image-card {
@@ -2800,9 +2971,11 @@ body {
 .category-card-visual-wrapper {
     width: 100%;
     aspect-ratio: 4 / 3;
-    border-radius: 24px; /* visually matching mockup rounded corners */
+    border-radius: 24px;
+    /* visually matching mockup rounded corners */
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* slightly stronger shadow for premium depth */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    /* slightly stronger shadow for premium depth */
     border: 1px solid rgba(0, 0, 0, 0.03);
     transition: var(--transition-smooth);
 }
@@ -2816,7 +2989,8 @@ body {
 
 .category-image-card:hover .category-card-visual-wrapper {
     transform: translateY(-6px);
-    box-shadow: 0 12px 28px rgba(110, 11, 5, 0.15); /* dark red themed shadow on hover */
+    box-shadow: 0 12px 28px rgba(110, 11, 5, 0.15);
+    /* dark red themed shadow on hover */
     border-color: var(--clr-brand-light);
 }
 
@@ -2837,9 +3011,7 @@ body {
     color: var(--clr-brand);
 }
 
-/* ==========================================================
-   EXPLORE CATEGORIES MENU PAGE STYLES (menu.html)
-   ========================================================== */
+/*EXPLORE CATEGORIES MENU PAGE STYLES*/
 
 .explore-categories-row {
     display: flex;
@@ -3026,10 +3198,9 @@ body {
     background-color: #EBEAEF;
 }
 
-/* ==========================================================
-   HOMEPAGE RECOMMENDED MULTI-FILTERS
-   ========================================================== */
-.category-filter-pill, .rating-filter-pill {
+/*HOMEPAGE RECOMMENDED MULTI-FILTERS*/
+.category-filter-pill,
+.rating-filter-pill {
     background-color: var(--clr-bg-card);
     border: 1px solid #EDEDED;
     border-radius: 50px;
@@ -3044,12 +3215,14 @@ body {
     flex-shrink: 0;
 }
 
-.category-filter-pill:hover, .rating-filter-pill:hover {
+.category-filter-pill:hover,
+.rating-filter-pill:hover {
     border-color: var(--clr-brand);
     color: var(--clr-brand);
 }
 
-.category-filter-pill.active, .rating-filter-pill.active {
+.category-filter-pill.active,
+.rating-filter-pill.active {
     background-color: var(--clr-brand);
     border-color: var(--clr-brand);
     color: #FFFFFF;

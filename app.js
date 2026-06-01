@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRatingFilter = 0;
 
     // Promo discounts state
-    let activeDiscounts = {
+    let activeDiscounts = JSON.parse(localStorage.getItem('activeDiscounts')) || {
         freeClaimed: false, // Gratis 5 Menu voucher (Rp 10k off)
         codeApplied: false, // 20% off
     };
@@ -227,6 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const addToCart = (itemId) => {
         const itemObj = menuItems.find(item => item.id === itemId);
         if (!itemObj) return;
+        if (itemObj.available === false) {
+            showToast('Maaf, menu ini sedang habis!');
+            return;
+        }
 
         if (shoppingCart[itemId]) {
             shoppingCart[itemId].qty += 1;

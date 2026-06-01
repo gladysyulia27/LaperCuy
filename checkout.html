@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LaperCuy - Pembayaran & Checkout</title>
     <meta name="description" content="Selesaikan pembayaran Anda menggunakan metode terpercaya LaperCuy secara instan.">
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <link rel="stylesheet" href="style.css?v=16.0">
 </head>
 
 <body>
@@ -106,29 +106,96 @@
                             <div class="checkout-payment-methods-card">
                                 <h4 style="font-size: 13px; font-weight: 700; color: var(--clr-text-main); margin-bottom: 16px;">Metode Pembayaran</h4>
 
-                                <div class="chk-pay-options-list">
-                                    <label class="chk-pay-option-label active">
-                                        <input type="radio" name="chk-payment-group" value="bank" checked>
-                                        <span class="chk-radio-circle"></span>
-                                        <span class="chk-pay-title"><i data-lucide="landmark" width="16" height="16"></i> Transfer Bank BSI</span>
+                                <div class="premium-payment-menu">
+                                    <!-- 1. TRANSFER BANK GROUP -->
+                                    <div class="pay-group-item expanded has-active-bank" id="pay-group-bank">
+                                        <div class="pay-group-header" id="bank-header-btn">
+                                            <div class="pay-group-left">
+                                                <span class="pay-icon-wrapper tfbank-logo-wrapper" style="display: flex; align-items: center; justify-content: center;">
+                                                    <img src="assets/tfbank.png" alt="Transfer Bank" class="pay-bank-img" style="width: 26px; height: 26px; object-fit: contain;">
+                                                </span>
+                                                <span class="pay-group-title">Transfer Bank</span>
+                                            </div>
+                                            <div class="pay-group-right">
+                                                <span class="circle-outline red-outline" id="bank-group-outline"></span>
+                                                <svg viewBox="0 0 24 24" class="pay-chevron-icon" id="bank-chevron" width="16" height="16" style="fill: none; stroke: #2D2D2D; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; cursor: pointer;">
+                                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <!-- Sub bank list (collapsible) -->
+                                        <div class="pay-sub-list" id="bank-sub-list" style="max-height: 200px;">
+                                            <label class="pay-sub-item active" id="sub-bank-mandiri">
+                                                <input type="radio" name="chk-payment-group" value="bank-mandiri" checked style="display:none;">
+                                                <div class="pay-sub-left">
+                                                    <span class="pay-bank-logo mandiri">
+                                                        <img src="assets/logomandiri.png" alt="Bank Mandiri" class="pay-bank-img" style="width: 24px; height: 24px; object-fit: contain;">
+                                                    </span>
+                                                    <span class="pay-sub-title">Bank Mandiri</span>
+                                                </div>
+                                                <div class="pay-sub-right">
+                                                    <svg viewBox="0 0 24 24" class="check-mark-red" width="18" height="18" style="fill: none; stroke: #841006; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;">
+                                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </label>
+
+                                            <label class="pay-sub-item" id="sub-bank-bni">
+                                                <input type="radio" name="chk-payment-group" value="bank-bni" style="display:none;">
+                                                <div class="pay-sub-left">
+                                                    <span class="pay-bank-logo bni">
+                                                        <img src="assets/logobni.jpg" alt="Bank BNI" class="pay-bank-img" style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;">
+                                                    </span>
+                                                    <span class="pay-sub-title">Bank BNI</span>
+                                                </div>
+                                                <div class="pay-sub-right">
+                                                    <svg viewBox="0 0 24 24" class="check-mark-red" width="18" height="18" style="fill: none; stroke: #841006; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;">
+                                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                                    </svg>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 2. QRIS -->
+                                    <label class="pay-group-item-direct" id="pay-group-qris">
+                                        <input type="radio" name="chk-payment-group" value="qris" style="display:none;">
+                                        <div class="pay-group-header">
+                                            <div class="pay-group-left">
+                                                <span class="pay-icon-wrapper qris-logo-wrapper" style="display: flex; align-items: center; justify-content: center;">
+                                                    <img src="assets/logoqris.png" alt="QRIS" class="qris-img-logo" style="width: auto; height: 14px; object-fit: contain;">
+                                                </span>
+                                                <span class="pay-group-title">Qris</span>
+                                            </div>
+                                            <div class="pay-group-right">
+                                                <span class="circle-outline red-outline"></span>
+                                            </div>
+                                        </div>
                                     </label>
-                                    <label class="chk-pay-option-label">
-                                        <input type="radio" name="chk-payment-group" value="qris">
-                                        <span class="chk-radio-circle"></span>
-                                        <span class="chk-pay-title"><i data-lucide="qr-code" width="16" height="16"></i> QRIS</span>
-                                    </label>
-                                    <label class="chk-pay-option-label">
-                                        <input type="radio" name="chk-payment-group" value="cash">
-                                        <span class="chk-radio-circle"></span>
-                                        <span class="chk-pay-title"><i data-lucide="wallet" width="16" height="16"></i> Bayar Tunai</span>
+
+                                    <!-- 3. BAYAR TUNAI -->
+                                    <label class="pay-group-item-direct" id="pay-group-cash">
+                                        <input type="radio" name="chk-payment-group" value="cash" style="display:none;">
+                                        <div class="pay-group-header">
+                                            <div class="pay-group-left">
+                                                <span class="pay-icon-wrapper tunai-logo-wrapper" style="display: flex; align-items: center; justify-content: center;">
+                                                    <img src="assets/tunai.png" alt="Bayar Tunai" class="pay-bank-img" style="width: 26px; height: 26px; object-fit: contain;">
+                                                </span>
+                                                <span class="pay-group-title">Bayar Tunai</span>
+                                            </div>
+                                            <div class="pay-group-right">
+                                                <span class="circle-outline red-outline"></span>
+                                            </div>
+                                        </div>
                                     </label>
                                 </div>
 
                                 <!-- Dynamic QRIS Mockup display box -->
-                                <div class="qris-payment-mockup-box hidden" id="chk-qris-visual-mock">
+                                <div class="qris-payment-mockup-box hidden" id="chk-qris-visual-mock" style="margin-top: 16px;">
                                     <span style="font-size: 11px; font-weight: 700; color: var(--clr-brand); margin-bottom: 6px; display: block; text-align: center;">SCAN QRIS LAPERCUY</span>
                                     <div class="qris-visual-graphic" style="display: flex; justify-content: center; align-items: center; background: white; padding: 10px; border-radius: 8px; border: 1px solid #EAEAEA;">
-                                        <i data-lucide="qr-code" width="128" height="128" style="color: #000;"></i>
+                                        <img src="assets/qr-code.png" alt="QRIS LaperCuy" style="width: 160px; height: 160px; object-fit: contain;">
                                     </div>
                                 </div>
                             </div>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LaperCuy - Profil Pengguna</title>
     <meta name="description" content="Kelola informasi pribadi dan pantau sisa saldo dompet virtual SaldoCuy.">
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <link rel="stylesheet" href="style.css?v=16.0">
 </head>
 
 <body>
@@ -62,10 +62,22 @@
                         <!-- Left Panel Card -->
                         <div class="profile-left-panel">
                             <div class="profile-visual-avatar">
-                                <div class="pvisual-circle"><i data-lucide="user" width="48" height="48"></i></div>
+                                <div class="pvisual-circle" id="profile-avatar-circle">
+                                    <svg viewBox="0 0 24 24" id="profile-avatar-placeholder" width="56" height="56" style="fill: #FFFFFF; display: block;">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <img id="profile-avatar-img" src="" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                    <div class="avatar-edit-overlay">
+                                        <i data-lucide="camera" width="16" height="16" style="margin-bottom: 2px;"></i>
+                                        <span>Ubah Foto</span>
+                                    </div>
+                                </div>
                                 <h3 class="pvisual-name" id="profile-lbl-fullname">Niken Sitohang</h3>
                                 <span class="pvisual-username">@nikensthg03</span>
                             </div>
+                            
+                            <!-- Hidden File Input for Avatar Upload -->
+                            <input type="file" id="avatar-file-input" style="display: none;" accept="image/*">
 
                             <!-- Dompet SaldoCuy -->
                             <div class="profile-dompet-card">
@@ -255,6 +267,230 @@
             <span>Profil</span>
         </a>
     </nav>
+
+    <!-- MODAL POPUP: Opsi Foto Profil -->
+    <div class="modal-overlay" id="avatar-modal-overlay">
+        <div class="modal-box" style="max-width: 400px; border-radius: var(--radius-lg);">
+            <div class="modal-header" style="border-bottom: 1px solid #F5ECE3; padding-bottom: 14px;">
+                <span class="modal-title" style="font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--clr-brand-dark);">Ubah Foto Profil</span>
+                <button class="modal-close" id="avatar-modal-close">
+                    <i data-lucide="x" width="18" height="18"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 20px 0 10px 0;">
+                <p style="font-size: 13px; color: var(--clr-text-muted); margin-bottom: 16px; text-align: center;">Pilih metode untuk mengubah foto profil Anda:</p>
+                <div class="avatar-options-list" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-avatar-option" id="btn-opt-gallery">
+                        <div class="opt-icon-wrapper" style="background: #E8F5E9; color: #2E7D32;">
+                            <i data-lucide="image" width="20" height="20"></i>
+                        </div>
+                        <div class="opt-text">
+                            <span class="opt-title">Pilih dari Galeri</span>
+                            <span class="opt-desc">Gunakan foto dari penyimpanan perangkat Anda</span>
+                        </div>
+                    </button>
+                    <button class="btn-avatar-option" id="btn-opt-drive">
+                        <div class="opt-icon-wrapper" style="background: #E3F2FD; color: #1565C0;">
+                            <i data-lucide="hard-drive" width="20" height="20"></i>
+                        </div>
+                        <div class="opt-text">
+                            <span class="opt-title">Impor dari Google Drive</span>
+                            <span class="opt-desc">Ambil foto dari akun Google Drive Anda</span>
+                        </div>
+                    </button>
+                    <button class="btn-avatar-option" id="btn-opt-camera">
+                        <div class="opt-icon-wrapper" style="background: #FFF3E0; color: #E65100;">
+                            <i data-lucide="camera" width="20" height="20"></i>
+                        </div>
+                        <div class="opt-text">
+                            <span class="opt-title">Ambil Foto Sekarang</span>
+                            <span class="opt-desc">Gunakan kamera untuk memotret saat ini</span>
+                        </div>
+                    </button>
+                    <button class="btn-avatar-option delete-option" id="btn-opt-delete" style="display: none; border-color: #FFEBEE;">
+                        <div class="opt-icon-wrapper" style="background: #FFEBEE; color: #C62828;">
+                            <i data-lucide="trash-2" width="20" height="20"></i>
+                        </div>
+                        <div class="opt-text">
+                            <span class="opt-title" style="color: #C62828;">Hapus Foto Profil</span>
+                            <span class="opt-desc">Kembali menggunakan siluet default</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP: Google Drive Simulation Selector -->
+    <div class="modal-overlay" id="drive-modal-overlay">
+        <div class="modal-box" style="max-width: 600px; padding: 0; overflow: hidden; border-radius: var(--radius-lg);">
+            <!-- Connection Loader State -->
+            <div id="drive-connecting-box" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 40px; text-align: center;">
+                <div class="drive-spinner"></div>
+                <h4 style="font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin: 20px 0 8px 0; color: var(--clr-brand-dark);" id="drive-loader-title">Menghubungkan ke Google Drive...</h4>
+                <p style="font-size: 13px; color: var(--clr-text-muted);" id="drive-loader-desc">Harap tunggu sebentar, sedang mengamankan sambungan...</p>
+            </div>
+            
+            <!-- Active Drive Explorer UI -->
+            <div id="drive-explorer-box" style="display: none; flex-direction: column; height: 450px;">
+                <!-- Drive Header -->
+                <div style="background: #F8F9FA; border-bottom: 1px solid #EBEAEF; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg width="24" height="24" viewBox="0 0 1443 1250" style="width: 24px; height: 24px;">
+                            <path fill="#3777e3" d="m962 1250 241-417H481l-241 417z"/>
+                            <path fill="#ffcf2d" d="m241 1250 240-417H0l241 417z"/>
+                            <path fill="#11a861" d="m1202 833 241-416H962L721 833z"/>
+                            <path fill="#2d6ef7" d="m721 833 241-416H481L240 833z"/>
+                            <path fill="#f34633" d="m481 417 240-417H240L0 417z"/>
+                            <path fill="#ffb700" d="m1202 417 241-417H962l-241 417z"/>
+                        </svg>
+                        <span style="font-family: var(--font-heading); font-size: 15px; font-weight: 700; color: #202124;">Google Drive</span>
+                    </div>
+                    <button class="modal-close" id="drive-modal-close" style="position: static; padding: 4px;">
+                        <i data-lucide="x" width="18" height="18" style="color: #5F6368;"></i>
+                    </button>
+                </div>
+                
+                <!-- Drive Path Bar -->
+                <div style="border-bottom: 1px solid #EBEAEF; padding: 10px 20px; background: #FFFFFF; font-size: 12px; color: #5f6368; display: flex; gap: 8px; align-items: center;">
+                    <span>Drive Saya</span>
+                    <i data-lucide="chevron-right" width="12" height="12"></i>
+                    <span>Foto</span>
+                    <i data-lucide="chevron-right" width="12" height="12"></i>
+                    <span style="color: #202124; font-weight: 600;">LaperCuy_Profile</span>
+                </div>
+                
+                <!-- Drive Core Split Layout -->
+                <div style="display: flex; flex: 1; overflow: hidden;">
+                    <!-- Sidepanel -->
+                    <div class="drive-side-panel" style="width: 160px; background: #FFFFFF; border-right: 1px solid #EBEAEF; padding: 16px 8px; display: flex; flex-direction: column; gap: 4px;">
+                        <div class="drive-side-item active">
+                            <i data-lucide="folder" width="16" height="16"></i>
+                            <span>Drive Saya</span>
+                        </div>
+                        <div class="drive-side-item">
+                            <i data-lucide="users" width="16" height="16"></i>
+                            <span>Dibagikan</span>
+                        </div>
+                        <div class="drive-side-item">
+                            <i data-lucide="clock" width="16" height="16"></i>
+                            <span>Terbaru</span>
+                        </div>
+                        <div class="drive-side-item">
+                            <i data-lucide="star" width="16" height="16"></i>
+                            <span>Berbintang</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Grid Content -->
+                    <div style="flex: 1; background: #FFFFFF; padding: 20px; overflow-y: auto;" class="drive-grid-content">
+                        <p style="font-size: 12px; color: #5f6368; font-weight: 600; margin-bottom: 12px;">Pilih salah satu file gambar profil Anda:</p>
+                        <div class="drive-files-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                            <!-- Option 1 -->
+                            <div class="drive-file-card" data-url="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop">
+                                <div class="drive-file-thumbnail" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop');"></div>
+                                <div class="drive-file-info">
+                                    <i data-lucide="image" width="14" height="14" style="color: #EA4335;"></i>
+                                    <span class="drive-file-name">niken_formal_casual.jpg</span>
+                                </div>
+                            </div>
+                            <!-- Option 2 -->
+                            <div class="drive-file-card" data-url="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format&fit=crop">
+                                <div class="drive-file-thumbnail" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop');"></div>
+                                <div class="drive-file-info">
+                                    <i data-lucide="image" width="14" height="14" style="color: #EA4335;"></i>
+                                    <span class="drive-file-name">niken_portrait_outdoor.jpg</span>
+                                </div>
+                            </div>
+                            <!-- Option 3 -->
+                            <div class="drive-file-card" data-url="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop">
+                                <div class="drive-file-thumbnail" style="background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop');"></div>
+                                <div class="drive-file-info">
+                                    <i data-lucide="image" width="14" height="14" style="color: #EA4335;"></i>
+                                    <span class="drive-file-name">niken_studio_clean.jpg</span>
+                                </div>
+                                <div class="drive-badge-recom">Direkomendasikan</div>
+                            </div>
+                            <!-- Option 4 -->
+                            <div class="drive-file-card" data-url="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=300&auto=format&fit=crop">
+                                <div class="drive-file-thumbnail" style="background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop');"></div>
+                                <div class="drive-file-info">
+                                    <i data-lucide="image" width="14" height="14" style="color: #EA4335;"></i>
+                                    <span class="drive-file-name">niken_smile_sweet.jpg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP: Live Camera Viewfinder & simulated count -->
+    <div class="modal-overlay" id="camera-modal-overlay">
+        <div class="modal-box" style="max-width: 440px; padding: 0; overflow: hidden; border-radius: var(--radius-lg);">
+            <div style="background: #111; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 8px; height: 8px; background: red; border-radius: 50%; animation: pulse 1.5s infinite;" id="camera-record-dot"></div>
+                    <span style="font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: #EEE;" id="camera-title-label">KAMERA AKTIF</span>
+                </div>
+                <button class="modal-close" id="camera-modal-close" style="position: static; padding: 4px; background: none; color: #888;">
+                    <i data-lucide="x" width="18" height="18"></i>
+                </button>
+            </div>
+            
+            <!-- Camera Body Viewfinder -->
+            <div style="background: #000; position: relative; height: 380px; display: flex; justify-content: center; align-items: center;" id="camera-viewport-container">
+                <!-- Screen Flash overlay -->
+                <div id="camera-screen-flash"></div>
+                
+                <!-- Big Countdown Overlay -->
+                <div id="camera-countdown">3</div>
+                
+                <!-- Viewfinder Retro Guides -->
+                <div class="camera-grid-line h-line" style="top: 33%;"></div>
+                <div class="camera-grid-line h-line" style="top: 66%;"></div>
+                <div class="camera-grid-line v-line" style="left: 33%;"></div>
+                <div class="camera-grid-line v-line" style="left: 66%;"></div>
+                
+                <!-- Retro Corner brackets -->
+                <div class="camera-bracket top-left"></div>
+                <div class="camera-bracket top-right"></div>
+                <div class="camera-bracket bottom-left"></div>
+                <div class="camera-bracket bottom-right"></div>
+                
+                <!-- Viewfinder Details -->
+                <div style="position: absolute; top: 12px; left: 16px; font-family: monospace; font-size: 10px; color: #00FF00; letter-spacing: 1px;">
+                    F2.8 | 1/125s | ISO 400
+                </div>
+                <div style="position: absolute; top: 12px; right: 16px; font-family: monospace; font-size: 10px; color: #00FF00;" id="camera-timer-stamp">
+                    REC 00:00:01
+                </div>
+                
+                <!-- Circular face guide border -->
+                <div style="width: 220px; height: 220px; border: 2px dashed rgba(255, 255, 255, 0.4); border-radius: 50%; position: absolute; z-index: 2; pointer-events: none;"></div>
+                
+                <!-- Real webcam video -->
+                <video id="camera-video" autoplay playsinline style="display: none; width: 100%; height: 100%; object-fit: cover;"></video>
+                
+                <!-- Fallback simulated camera canvas / picture preview -->
+                <div id="camera-simulated-preview" style="width: 100%; height: 100%; background-size: cover; background-position: center; display: none;"></div>
+                
+                <!-- Camera loader / connecting label -->
+                <div id="camera-status-overlay" style="display: flex; flex-direction: column; align-items: center; color: white;">
+                    <div class="drive-spinner" style="border-top-color: white;"></div>
+                    <span style="font-size: 13px; margin-top: 14px;">Menginisialisasi Kamera...</span>
+                </div>
+            </div>
+            
+            <!-- Camera Control Footer -->
+            <div style="background: #111; padding: 20px; display: flex; justify-content: center; align-items: center; border-top: 1px solid #222;">
+                <button class="btn" id="btn-camera-capture" style="width: 64px; height: 64px; border-radius: 50%; background: white; border: 4px solid #333; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.2s;" title="Ambil Foto">
+                     <div style="width: 44px; height: 44px; border-radius: 50%; background: #C62828;"></div>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toast-box">

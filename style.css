@@ -477,7 +477,7 @@ body {
 .btn-brand {
     background-color: var(--clr-brand);
     color: var(--clr-text-light);
-    width: 100%;
+    width: 50%;
 }
 
 .btn-brand:hover {
@@ -754,7 +754,8 @@ body {
 .tab-btn {
     background: none;
     border: none;
-    padding: 8px 16px; /* Horizontal padding for premium breathing room */
+    padding: 8px 16px;
+    /* Horizontal padding for premium breathing room */
     font-family: var(--font-heading);
     font-size: 13px;
     font-weight: 700;
@@ -764,7 +765,8 @@ body {
     transition: var(--transition-smooth);
     flex: 1;
     text-align: center;
-    white-space: nowrap; /* Prevent text wrapping and overlap */
+    white-space: nowrap;
+    /* Prevent text wrapping and overlap */
 }
 
 .tab-btn.active {
@@ -2317,28 +2319,37 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 76px; /* Figma Height: 76px */
+    height: 76px;
+    /* Figma Height: 76px */
     /* Using dynamic multi-background for a snugger, mathematically perfect Concave Cutout in the center */
-    background-image: 
-        linear-gradient(to right, #841006, #841006), /* Figma Background Color */
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 76' width='120' height='76' preserveAspectRatio='none'><rect width='120' height='76' fill='%23FFFFFF'/><path d='M 0,0 H 12 C 32,0 36,51 60,51 C 84,51 88,0 108,0 H 120 V 76 H 0 Z' fill='%23841006'/></svg>"), /* Center snug curved cutout (120px width) with white mask rect */
-        linear-gradient(to right, #841006, #841006); /* Right solid block */
-    background-position: 
-        left center, 
-        center top, 
+    background-image:
+        linear-gradient(to right, #841006, #841006),
+        /* Figma Background Color */
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 76' width='120' height='76' preserveAspectRatio='none'><rect width='120' height='76' fill='%23FFFFFF'/><path d='M 0,0 H 12 C 32,0 36,51 60,51 C 84,51 88,0 108,0 H 120 V 76 H 0 Z' fill='%23841006'/></svg>"),
+        /* Center snug curved cutout (120px width) with white mask rect */
+        linear-gradient(to right, #841006, #841006);
+    /* Right solid block */
+    background-position:
+        left center,
+        center top,
         right center;
-    background-size: 
-        calc(50% - 58px) 100%, /* Seamless 2px overlap on the left */
-        120px 100%, 
-        calc(50% - 58px) 100%; /* Seamless 2px overlap on the right */
+    background-size:
+        calc(50% - 58px) 100%,
+        /* Seamless 2px overlap on the left */
+        120px 100%,
+        calc(50% - 58px) 100%;
+    /* Seamless 2px overlap on the right */
     background-repeat: no-repeat;
     display: none;
     justify-content: space-around;
-    align-items: flex-end; /* Align all navigation items at the bottom */
+    align-items: flex-end;
+    /* Align all navigation items at the bottom */
     padding: 0 0 10px 0;
     z-index: 999;
-    border-radius: 18px 18px 0 0; /* Figma border-radius: 18px */
-    overflow: visible; /* Ensure floating button is not clipped */
+    border-radius: 18px 18px 0 0;
+    /* Figma border-radius: 18px */
+    overflow: visible;
+    /* Ensure floating button is not clipped */
     /* Premium drop shadow that contours the cutout perfectly */
     filter: drop-shadow(0 -6px 20px rgba(132, 16, 6, 0.25));
 }
@@ -2356,13 +2367,18 @@ body {
     gap: 5px;
     color: rgba(255, 255, 255, 0.65);
     text-decoration: none;
-    font-family: 'Poppins', sans-serif; /* Poppins Font Family */
-    font-size: 12px; /* Figma Font Size: 12px */
-    font-weight: 600; /* Figma Font Weight: 600 */
-    line-height: 18px; /* Figma Line Height: 18px */
+    font-family: 'Poppins', sans-serif;
+    /* Poppins Font Family */
+    font-size: 12px;
+    /* Figma Font Size: 12px */
+    font-weight: 600;
+    /* Figma Font Weight: 600 */
+    line-height: 18px;
+    /* Figma Line Height: 18px */
     transition: var(--transition-fast);
     flex: 1;
-    height: 48px; /* Uniform height keeps all text aligned */
+    height: 48px;
+    /* Uniform height keeps all text aligned */
     position: relative;
 }
 
@@ -2371,7 +2387,8 @@ body {
     height: 24px;
     color: rgba(255, 255, 255, 0.65);
     transition: var(--transition-fast);
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2)); /* Premium soft shadow filter matching screenshot */
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+    /* Premium soft shadow filter matching screenshot */
 }
 
 .mobile-nav-item:hover,
@@ -2393,36 +2410,46 @@ body {
 
 /* Render a dark open doorway inside the white home icon by styling the doorway polyline */
 .mobile-nav-item.mobile-nav-center i polyline {
-    fill: #841006; /* Figma Background Color */
+    fill: #841006;
+    /* Figma Background Color */
 }
 
 /* Center elevated home button (floating action button) */
 .mobile-nav-item.mobile-nav-center {
     position: relative;
-    top: 0; /* Keep the item at bottom level so the text aligns perfectly */
+    top: 0;
+    /* Keep the item at bottom level so the text aligns perfectly */
     color: #ffffff;
 }
 
 .mobile-nav-item.mobile-nav-center .mobile-nav-center-btn {
-    width: 80px; /* Figma Width: 80px */
-    height: 80px; /* Figma Height: 80px */
+    width: 80px;
+    /* Figma Width: 80px */
+    height: 80px;
+    /* Figma Height: 80px */
     border-radius: 50%;
-    background-color: #841006; /* Figma Background Color */
-    border: none; /* Removed the thick white border to match screenshot */
+    background-color: #841006;
+    /* Figma Background Color */
+    border: none;
+    /* Removed the thick white border to match screenshot */
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: -58px; /* Figma Floating Offset: starts at 1163px which is -40px from top of bar */
+    top: -58px;
+    /* Figma Floating Offset: starts at 1163px which is -40px from top of bar */
     left: 50%;
     transform: translateX(-50%);
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(132, 16, 6, 0.45); /* Figma inset shadow + drop shadow */
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(132, 16, 6, 0.45);
+    /* Figma inset shadow + drop shadow */
     transition: var(--transition-smooth);
 }
 
 .mobile-nav-item.mobile-nav-center .mobile-nav-center-btn i {
-    width: 50px !important; /* Figma Icon Width: 50px */
-    height: 50px !important; /* Figma Icon Height: 50px */
+    width: 50px !important;
+    /* Figma Icon Width: 50px */
+    height: 50px !important;
+    /* Figma Icon Height: 50px */
 }
 
 .mobile-nav-item.mobile-nav-center:hover .mobile-nav-center-btn,
@@ -2543,13 +2570,15 @@ body {
     }
 
     .hero-title-welcome {
-        display: none !important; /* Hide "Selamat datang!" on mobile */
+        display: none !important;
+        /* Hide "Selamat datang!" on mobile */
     }
 
     .hero-desc {
         display: block !important;
         font-size: 14px !important;
-        font-weight: 400 !important; /* Make it regular, NOT bold */
+        font-weight: 400 !important;
+        /* Make it regular, NOT bold */
         color: var(--clr-cream) !important;
         opacity: 0.9 !important;
         line-height: 1.5 !important;
@@ -2558,11 +2587,13 @@ body {
     }
 
     .hero-buttons {
-        display: none !important; /* Hide buttons on mobile */
+        display: none !important;
+        /* Hide buttons on mobile */
     }
 
     .hero-visual {
-        display: none !important; /* Hide food image on mobile */
+        display: none !important;
+        /* Hide food image on mobile */
     }
 
     .mobile-search-bar {
@@ -2661,14 +2692,16 @@ body {
 
     /* Reposition and style the floating assistant button for mobile as in the screenshot */
     .chat-float-btn {
-        bottom: 92px; /* Float elegantly above the 72px mobile navigation bar */
+        bottom: 92px;
+        /* Float elegantly above the 72px mobile navigation bar */
         right: 20px;
-        background-color: #CEB271; /* Premium gold accent color matching screenshot */
+        background-color: #CEB271;
+        /* Premium gold accent color matching screenshot */
         width: 52px;
         height: 52px;
         box-shadow: 0 6px 20px rgba(110, 11, 5, 0.2);
     }
-    
+
     .chat-float-btn i {
         width: 20px;
         height: 20px;
@@ -2677,7 +2710,8 @@ body {
 
     /* Reposition the assistant widget box nicely for mobile viewport */
     .chat-widget-box {
-        bottom: 156px; /* Positioned nicely above the new gold chat button */
+        bottom: 156px;
+        /* Positioned nicely above the new gold chat button */
         right: 20px;
         width: calc(100% - 40px);
         max-width: 340px;
@@ -2722,7 +2756,8 @@ body {
     .section-head .filter-tabs {
         width: 100%;
         justify-content: center !important;
-        max-width: 350px; /* Increased width to prevent button text crowding on smaller screens */
+        max-width: 350px;
+        /* Increased width to prevent button text crowding on smaller screens */
         margin: 0 auto;
     }
 }
@@ -3227,4 +3262,629 @@ body {
     border-color: var(--clr-brand);
     color: #FFFFFF;
     box-shadow: 0 4px 12px rgba(110, 11, 5, 0.2);
+}
+
+/* PREMIUM PAYMENT METHOD MENU SELECTOR */
+.premium-payment-menu {
+    background: #FFFFFF;
+    border: 1px solid #EBEAEF;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    margin-bottom: 20px;
+}
+
+.pay-group-item,
+.pay-group-item-direct {
+    display: block;
+    background: #FFFFFF;
+    transition: background 0.25s ease;
+    cursor: pointer;
+}
+
+.pay-group-item {
+    border-bottom: 1px solid #F5F5F7;
+}
+
+.pay-group-item-direct {
+    border-bottom: 1px solid #F5F5F7;
+}
+
+.pay-group-item-direct:last-child {
+    border-bottom: none;
+}
+
+.pay-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    user-select: none;
+}
+
+.pay-group-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.pay-group-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pay-icon-wrapper,
+.pay-bank-logo,
+.qris-logo-wrapper {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    border: 1px solid #EBEAEF !important;
+    background-color: #FFFFFF !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    transition: all 0.25s ease;
+}
+
+.pay-icon-wrapper.gold-bg {
+    background-color: #FAF5E8 !important;
+    border-color: #F5E5C9 !important;
+}
+
+.pay-icon-wrapper.gold-bg i {
+    width: 18px !important;
+    height: 18px !important;
+    color: #CEB271 !important;
+}
+
+.pay-bank-img {
+    width: 26px !important;
+    height: 26px !important;
+    object-fit: contain !important;
+    border-radius: 4px !important;
+}
+
+.qris-img-logo {
+    width: 26px !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+.pay-group-title,
+.pay-sub-title {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #2D2D2D !important;
+    margin: 0 !important;
+}
+
+.pay-selected-badge {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #841006;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    transition: opacity 0.2s ease;
+}
+
+.pay-selected-badge i {
+    width: 12px;
+    height: 12px;
+    stroke-width: 3;
+}
+
+.pay-chevron-icon {
+    width: 16px;
+    height: 16px;
+    color: #2D2D2D;
+    transition: transform 0.3s ease;
+}
+
+.circle-outline {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #EBEAEF;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.circle-outline.red-outline {
+    border-color: #841006;
+}
+
+.pay-sub-list {
+    background: #FAFAFB;
+    border-top: 1px solid #F5F5F7;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pay-group-item.expanded .pay-sub-list {
+    max-height: 200px;
+}
+
+.pay-group-item.expanded .pay-chevron-icon {
+    transform: rotate(180deg);
+}
+
+.pay-sub-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px !important;
+    /* Perfect left alignment at 20px */
+    border-bottom: 1px solid #F5F5F7;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.pay-sub-item:last-child {
+    border-bottom: none;
+}
+
+.pay-sub-item:hover {
+    background: #F1F1F3;
+}
+
+.pay-sub-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Sub-Bank raw checkmark indicators */
+.check-mark-red {
+    display: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    color: #841006 !important;
+    stroke-width: 3 !important;
+}
+
+.pay-sub-item.active .check-mark-red {
+    display: block !important;
+}
+
+.pay-sub-item.active {
+    background: #FFFBFB;
+}
+
+.pay-group-item-direct.active {
+    background: #FFFBFB;
+}
+
+/* Base style for red circular outlines */
+.circle-outline.red-outline {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #841006;
+    background: transparent;
+    display: inline-block;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* Filled red circle with white checkmark when active */
+.pay-group-item-direct.active .circle-outline.red-outline,
+.pay-group-item.has-active-bank #bank-group-outline {
+    background-color: #841006 !important;
+    border-color: #841006 !important;
+    position: relative !important;
+}
+
+.pay-group-item-direct.active .circle-outline.red-outline::after,
+.pay-group-item.has-active-bank #bank-group-outline::after {
+    content: '✓' !important;
+    color: white !important;
+    font-size: 11px !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    font-weight: 800 !important;
+}
+
+/*LaperCuy Profile Customization & Premium Modal Styles*/
+
+/* Large profile visual avatar adjustments */
+.pvisual-circle {
+    background-color: var(--clr-brand-dark) !important;
+    border: none !important;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+}
+
+.pvisual-circle:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.pvisual-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.pvisual-circle svg {
+    transition: transform var(--transition-smooth);
+}
+
+.pvisual-circle:hover svg {
+    transform: scale(1.1);
+}
+
+/* Avatar edit overlay slider */
+.avatar-edit-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 34px;
+    background-color: rgba(74, 5, 2, 0.85);
+    /* brand-dark color overlay */
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateY(10px);
+    pointer-events: none;
+    z-index: 5;
+}
+
+.pvisual-circle:hover .avatar-edit-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.avatar-edit-overlay i {
+    color: #FFFFFF;
+}
+
+/* Avatar option picker menu buttons */
+.avatar-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-avatar-option {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #F5ECE3;
+    background: #FFFFFF;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-avatar-option:hover {
+    border-color: var(--clr-brand);
+    background-color: var(--clr-brand-translucent);
+    transform: translateY(-2px);
+}
+
+.opt-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.btn-avatar-option:hover .opt-icon-wrapper {
+    transform: scale(1.1);
+}
+
+.opt-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.opt-title {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--clr-text-main);
+}
+
+.opt-desc {
+    font-size: 11px;
+    color: var(--clr-text-muted);
+}
+
+/* Warning styling for photo deletion option */
+.btn-avatar-option.delete-option {
+    border-color: #FFEBEE;
+}
+
+.btn-avatar-option.delete-option:hover {
+    background-color: #FFF5F5;
+    border-color: #EF5350;
+}
+
+/* Google Drive Simulation Elements */
+.drive-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #EBEAEF;
+    border-top: 3px solid #1A73E8;
+    /* Google Drive blue */
+    border-radius: 50%;
+    animation: drive-spin 0.8s linear infinite;
+}
+
+@keyframes drive-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.drive-side-panel {
+    background-color: #FFFFFF;
+}
+
+.drive-side-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 0 20px 20px 0;
+    font-size: 13px;
+    color: #5F6368;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.drive-side-item:hover {
+    background: #F1F3F4;
+    color: #202124;
+}
+
+.drive-side-item.active {
+    background: #E8F0FE;
+    color: #1A73E8;
+}
+
+.drive-file-card {
+    border: 1px solid #DADCE0;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    background: #FFFFFF;
+    transition: all 0.2s ease;
+}
+
+.drive-file-card:hover {
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+    border-color: transparent;
+    transform: translateY(-2px);
+}
+
+.drive-file-thumbnail {
+    height: 110px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #F8F9FA;
+    border-bottom: 1px solid #EBEAEF;
+}
+
+.drive-file-info {
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFFFFF;
+}
+
+.drive-file-name {
+    font-size: 11px;
+    color: #3C4043;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.drive-badge-recom {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #34A853;
+    /* Google Green */
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Camera capture screen flash and countdown overlay styling */
+#camera-screen-flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#camera-screen-flash.flash-active {
+    animation: camera-flash-ani 0.4s ease-out forwards;
+}
+
+@keyframes camera-flash-ani {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+#camera-countdown {
+    position: absolute;
+    font-size: 90px;
+    font-weight: 900;
+    color: #FFFFFF;
+    text-shadow: 0 0 24px rgba(0, 0, 0, 0.9);
+    z-index: 11;
+    font-family: var(--font-heading);
+    pointer-events: none;
+}
+
+#camera-countdown.pulse {
+    animation: countdown-pulse 1s ease-out forwards;
+}
+
+@keyframes countdown-pulse {
+    0% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* Retro viewfinder aesthetics */
+.camera-grid-line {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.camera-grid-line.h-line {
+    width: 100%;
+    height: 1px;
+    left: 0;
+}
+
+.camera-grid-line.v-line {
+    width: 1px;
+    height: 100%;
+    top: 0;
+}
+
+.camera-bracket {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.camera-bracket.top-left {
+    top: 20px;
+    left: 20px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.camera-bracket.top-right {
+    top: 20px;
+    right: 20px;
+    border-left: none;
+    border-bottom: none;
+}
+
+.camera-bracket.bottom-left {
+    bottom: 20px;
+    left: 20px;
+    border-right: none;
+    border-top: none;
+}
+
+.camera-bracket.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Camera trigger feedback */
+#btn-camera-capture:active {
+    transform: scale(0.92);
+}
+
+/* Mobile profile header border boxes & sizes standard */
+.action-btn.profile-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.action-btn.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.mobile-profile-img {
+    transition: transform var(--transition-fast) ease;
+}
+
+.mobile-nav-item.active .mobile-profile-img {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 2px var(--clr-brand);
 }

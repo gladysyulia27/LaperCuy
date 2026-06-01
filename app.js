@@ -946,14 +946,90 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Payment Methods toggler logic
-    const payOptionLabels = document.querySelectorAll('.chk-pay-option-label');
+    // Premium Payment Methods Menu Toggler & Logic
+    const payGroupBank = document.getElementById('pay-group-bank');
+    const bankHeaderBtn = document.getElementById('bank-header-btn');
+    const paySubItems = document.querySelectorAll('.pay-sub-item');
+    const payDirectItems = document.querySelectorAll('.pay-group-item-direct');
     const qrisMockBox = document.getElementById('chk-qris-visual-mock');
-    payOptionLabels.forEach(label => {
-        label.addEventListener('click', () => {
-            payOptionLabels.forEach(l => l.classList.remove('active'));
-            label.classList.add('active');
-            const radio = label.querySelector('input[type="radio"]');
+
+    // 1. Toggle bank list expansion
+    if (bankHeaderBtn && payGroupBank) {
+        bankHeaderBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            payGroupBank.classList.toggle('expanded');
+            // Toggle chevron icon and max-height manually for smooth animation
+            const bankSubList = document.getElementById('bank-sub-list');
+            if (bankSubList) {
+                if (payGroupBank.classList.contains('expanded')) {
+                    bankSubList.style.maxHeight = '200px';
+                } else {
+                    bankSubList.style.maxHeight = '0px';
+                }
+            }
+        });
+    }
+
+    // Function to clear direct items active states
+    const clearDirectActiveStates = () => {
+        payDirectItems.forEach(item => {
+            item.classList.remove('active');
+            const radio = item.querySelector('input[type="radio"]');
+            if (radio) radio.checked = false;
+        });
+    };
+
+    // Function to clear bank active states
+    const clearBankActiveStates = () => {
+        paySubItems.forEach(sub => {
+            sub.classList.remove('active');
+            const radio = sub.querySelector('input[type="radio"]');
+            if (radio) radio.checked = false;
+        });
+        
+        // Remove parent active check badge class
+        if (payGroupBank) {
+            payGroupBank.classList.remove('has-active-bank');
+        }
+    };
+
+    // 2. Sub-Bank click handler
+    paySubItems.forEach(subItem => {
+        subItem.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            // Clear other payment states first
+            clearDirectActiveStates();
+            
+            // Reset other bank items
+            paySubItems.forEach(s => s.classList.remove('active'));
+            
+            // Set current clicked bank sub item active
+            subItem.classList.add('active');
+            const radio = subItem.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                // Since user clicked a bank, set the main group header to selected badge state
+                if (payGroupBank) {
+                    payGroupBank.classList.add('has-active-bank');
+                }
+            }
+            
+            // Hide QRIS mockup
+            if (qrisMockBox) qrisMockBox.classList.add('hidden');
+        });
+    });
+
+    // 3. Direct Items (QRIS, Bayar Tunai) click handler
+    payDirectItems.forEach(directItem => {
+        directItem.addEventListener('click', (e) => {
+            // Clear other states
+            clearDirectActiveStates();
+            clearBankActiveStates();
+            
+            // Set active
+            directItem.classList.add('active');
+            const radio = directItem.querySelector('input[type="radio"]');
             if (radio) {
                 radio.checked = true;
                 if (radio.value === 'qris') {
@@ -1013,8 +1089,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (methodVal === 'qris') {
                 showToast(`✓ Pembayaran QRIS Berhasil!${methodMsg}`);
-            } else if (methodVal === 'bank') {
-                showToast(`✓ Pembayaran Transfer BSI Sukses!${methodMsg}`);
+            } else if (methodVal.startsWith('bank')) {
+                let bankName = "Bank";
+                if (methodVal === 'bank-mandiri') bankName = "Bank Mandiri";
+                else if (methodVal === 'bank-bni') bankName = "Bank BNI";
+                showToast(`✓ Pembayaran Transfer ${bankName} Sukses!${methodMsg}`);
             } else {
                 showToast(`✓ Pesanan terkonfirmasi! Bayar di kasir.${methodMsg}`);
             }
@@ -1390,6 +1469,391 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize explore page setup
     setupExplorePage();
+
+    // ==========================================================================
+    // 8. PROFILE AVATAR CUSTOMIZATION & UPLOAD SYSTEM
+    // ==========================================================================
+    
+    // Global function to sync the active avatar picture across all instances
+    const syncProfileAvatar = () => {
+        const avatarData = localStorage.getItem('profileAvatarData');
+        
+        // Sync desktop & mobile header profile buttons (#profile-btn)
+        const profileBtns = document.querySelectorAll('#profile-btn');
+        profileBtns.forEach(btn => {
+            let img = btn.querySelector('#header-profile-img');
+            let icon = btn.querySelector('i');
+            
+            if (avatarData) {
+                if (icon) icon.style.display = 'none';
+                if (!img) {
+                    img = document.createElement('img');
+                    img.id = 'header-profile-img';
+                    btn.appendChild(img);
+                }
+                img.src = avatarData;
+                img.style.display = 'block';
+                btn.classList.add('profile-avatar');
+            } else {
+                if (icon) icon.style.display = 'block';
+                if (img) img.style.display = 'none';
+            }
+        });
+
+        // Sync mobile footer navigation profile item
+        const mobileProfileBtn = document.getElementById('mobile-profile-btn');
+        if (mobileProfileBtn) {
+            const icon = mobileProfileBtn.querySelector('i');
+            let img = mobileProfileBtn.querySelector('.mobile-profile-img');
+            
+            if (avatarData) {
+                if (icon) icon.style.display = 'none';
+                if (!img) {
+                    img = document.createElement('img');
+                    img.className = 'mobile-profile-img';
+                    img.style.width = '20px';
+                    img.style.height = '20px';
+                    img.style.borderRadius = '50%';
+                    img.style.objectFit = 'cover';
+                    mobileProfileBtn.insertBefore(img, mobileProfileBtn.firstChild);
+                }
+                img.src = avatarData;
+                img.style.display = 'inline-block';
+            } else {
+                if (icon) icon.style.display = 'inline-block';
+                if (img) img.style.display = 'none';
+            }
+        }
+
+        // Sync large profile avatar on profile.html
+        const profilePageImg = document.getElementById('profile-avatar-img');
+        const profilePagePlaceholder = document.getElementById('profile-avatar-placeholder');
+        const btnDeleteOpt = document.getElementById('btn-opt-delete');
+
+        if (profilePageImg && profilePagePlaceholder) {
+            if (avatarData) {
+                profilePagePlaceholder.style.display = 'none';
+                profilePageImg.src = avatarData;
+                profilePageImg.style.display = 'block';
+                if (btnDeleteOpt) btnDeleteOpt.style.display = 'flex';
+            } else {
+                profilePagePlaceholder.style.display = 'block';
+                profilePageImg.src = '';
+                profilePageImg.style.display = 'none';
+                if (btnDeleteOpt) btnDeleteOpt.style.display = 'none';
+            }
+        }
+    };
+
+    // Setup interactive events on the Profile Page
+    const setupProfileAvatarChanger = () => {
+        const avatarCircle = document.getElementById('profile-avatar-circle');
+        if (!avatarCircle) return; // Only execute if on profile page
+
+        const fileInput = document.getElementById('avatar-file-input');
+        
+        // Modals
+        const avatarModal = document.getElementById('avatar-modal-overlay');
+        const driveModal = document.getElementById('drive-modal-overlay');
+        const cameraModal = document.getElementById('camera-modal-overlay');
+        
+        // Close Buttons
+        const closeAvatarModal = document.getElementById('avatar-modal-close');
+        const closeDriveModal = document.getElementById('drive-modal-close');
+        const closeCameraModal = document.getElementById('camera-modal-close');
+        
+        // Selection options
+        const optGallery = document.getElementById('btn-opt-gallery');
+        const optDrive = document.getElementById('btn-opt-drive');
+        const optCamera = document.getElementById('btn-opt-camera');
+        const optDelete = document.getElementById('btn-opt-delete');
+
+        // Modal Helpers
+        const openModal = (modal) => {
+            if (modal) modal.classList.add('active');
+        };
+        const closeModal = (modal) => {
+            if (modal) modal.classList.remove('active');
+        };
+
+        // Open options selector click
+        avatarCircle.addEventListener('click', () => {
+            openModal(avatarModal);
+        });
+
+        // Close options selector click
+        closeAvatarModal.addEventListener('click', () => closeModal(avatarModal));
+        
+        // Close modals clicking outside boxes
+        [avatarModal, driveModal, cameraModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal);
+                    if (modal === cameraModal) stopCameraStream();
+                }
+            });
+        });
+
+        // 1. SELECT FROM DEVICE GALLERY
+        optGallery.addEventListener('click', () => {
+            closeModal(avatarModal);
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64 = event.target.result;
+                localStorage.setItem('profileAvatarData', base64);
+                syncProfileAvatar();
+                showToast("✓ Foto profil berhasil diperbarui dari Galeri!");
+            };
+            reader.readAsDataURL(file);
+            fileInput.value = ''; // Reset uploader input
+        });
+
+        // 2. GOOGLE DRIVE DIRECTORY EXPLORER SIMULATION
+        const driveConnectingBox = document.getElementById('drive-connecting-box');
+        const driveExplorerBox = document.getElementById('drive-explorer-box');
+        const driveLoaderTitle = document.getElementById('drive-loader-title');
+        const driveLoaderDesc = document.getElementById('drive-loader-desc');
+
+        optDrive.addEventListener('click', () => {
+            closeModal(avatarModal);
+            openModal(driveModal);
+            
+            driveConnectingBox.style.display = 'flex';
+            driveExplorerBox.style.display = 'none';
+            
+            driveLoaderTitle.textContent = "Menghubungkan ke Google Drive...";
+            driveLoaderDesc.textContent = "Harap tunggu sebentar, sedang mengamankan sambungan...";
+
+            setTimeout(() => {
+                driveLoaderTitle.textContent = "Membuka folder Drive...";
+                driveLoaderDesc.textContent = "Membaca berkas di Drive Saya > Foto > LaperCuy_Profile...";
+            }, 800);
+
+            setTimeout(() => {
+                driveConnectingBox.style.display = 'none';
+                driveExplorerBox.style.display = 'flex';
+            }, 1600);
+        });
+
+        closeDriveModal.addEventListener('click', () => closeModal(driveModal));
+
+        // Click file item download simulator
+        const driveFileCards = document.querySelectorAll('.drive-file-card');
+        driveFileCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const unsplashUrl = card.getAttribute('data-url');
+                const fileName = card.querySelector('.drive-file-name').textContent;
+                
+                driveExplorerBox.style.display = 'none';
+                driveConnectingBox.style.display = 'flex';
+                driveLoaderTitle.textContent = `Mengunduh ${fileName}...`;
+                driveLoaderDesc.textContent = "Menyinkronkan gambar profil Anda dengan Google Drive...";
+
+                setTimeout(() => {
+                    localStorage.setItem('profileAvatarData', unsplashUrl);
+                    syncProfileAvatar();
+                    closeModal(driveModal);
+                    showToast(`✓ Foto profil berhasil diimpor dari Google Drive!`);
+                }, 1300);
+            });
+        });
+
+        // 3. CAMERA LIVE PREVIEW & countdown fallback
+        const video = document.getElementById('camera-video');
+        const cameraSimPreview = document.getElementById('camera-simulated-preview');
+        const cameraStatusOverlay = document.getElementById('camera-status-overlay');
+        const cameraTitleLabel = document.getElementById('camera-title-label');
+        const cameraRecordDot = document.getElementById('camera-record-dot');
+        const cameraCountdown = document.getElementById('camera-countdown');
+        const cameraFlash = document.getElementById('camera-screen-flash');
+        const btnCapture = document.getElementById('btn-camera-capture');
+        const timerStamp = document.getElementById('camera-timer-stamp');
+
+        let streamInstance = null;
+        let cameraActive = false;
+        let timerInterval = null;
+
+        const stopCameraStream = () => {
+            if (streamInstance) {
+                streamInstance.getTracks().forEach(track => track.stop());
+                streamInstance = null;
+            }
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            video.srcObject = null;
+            cameraActive = false;
+        };
+
+        closeCameraModal.addEventListener('click', () => {
+            closeModal(cameraModal);
+            stopCameraStream();
+        });
+
+        // Synthesize Shutter audio trigger cleanly using Web Audio (mirrors mechanical mirror slaps!)
+        const playShutterSound = () => {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // High-pitched transient click
+                const clickOsc = audioCtx.createOscillator();
+                const clickGain = audioCtx.createGain();
+                clickOsc.connect(clickGain);
+                clickGain.connect(audioCtx.destination);
+                clickOsc.type = 'triangle';
+                clickOsc.frequency.setValueAtTime(1100, audioCtx.currentTime);
+                clickOsc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.07);
+                clickGain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                clickGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.07);
+                
+                clickOsc.start();
+                clickOsc.stop(audioCtx.currentTime + 0.07);
+
+                // Lower frequency mechanical slapper
+                const slapOsc = audioCtx.createOscillator();
+                const slapGain = audioCtx.createGain();
+                slapOsc.connect(slapGain);
+                slapGain.connect(audioCtx.destination);
+                slapOsc.type = 'sawtooth';
+                slapOsc.frequency.setValueAtTime(75, audioCtx.currentTime);
+                slapOsc.frequency.linearRampToValueAtTime(10, audioCtx.currentTime + 0.16);
+                slapGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                slapGain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.16);
+
+                slapOsc.start();
+                slapOsc.stop(audioCtx.currentTime + 0.16);
+            } catch (err) {
+                console.warn("Shutter audio synthesis not loaded:", err);
+            }
+        };
+
+        optCamera.addEventListener('click', () => {
+            closeModal(avatarModal);
+            openModal(cameraModal);
+
+            cameraCountdown.style.display = 'none';
+            cameraFlash.classList.remove('flash-active');
+            cameraStatusOverlay.style.display = 'flex';
+            video.style.display = 'none';
+            cameraSimPreview.style.display = 'none';
+            cameraTitleLabel.textContent = "MENGAKTIFKAN KAMERA...";
+            cameraRecordDot.style.background = "#FFEB3B";
+            timerStamp.textContent = "REC 00:00:00";
+
+            let seconds = 0;
+            const startTimer = () => {
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const pad = (val) => String(val).padStart(2, '0');
+                    timerStamp.textContent = `REC 00:00:${pad(seconds)}`;
+                }, 1000);
+            };
+
+            // Attempt genuine webcam context
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+                .then(stream => {
+                    streamInstance = stream;
+                    video.srcObject = stream;
+                    video.style.display = 'block';
+                    cameraStatusOverlay.style.display = 'none';
+                    cameraTitleLabel.textContent = "KAMERA AKTIF (LIVE)";
+                    cameraRecordDot.style.background = "#F44336";
+                    cameraActive = true;
+                    startTimer();
+                })
+                .catch(err => {
+                    console.log("Device webcam blocked, invoking simulation backdrop.", err);
+                    
+                    // Fallback to high-res Simulated viewfinder backdrop
+                    setTimeout(() => {
+                        cameraStatusOverlay.style.display = 'none';
+                        const mockPortrait = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop";
+                        cameraSimPreview.style.backgroundImage = `url('${mockPortrait}')`;
+                        cameraSimPreview.style.display = 'block';
+                        cameraTitleLabel.textContent = "KAMERA (SIMULASI AUTOFOKUS)";
+                        cameraRecordDot.style.background = "#FF9800";
+                        cameraActive = false;
+                        startTimer();
+                    }, 1000);
+                });
+        });
+
+        // Trigger shutter countdown capture
+        btnCapture.addEventListener('click', () => {
+            btnCapture.disabled = true;
+            cameraCountdown.style.display = 'block';
+            cameraCountdown.classList.remove('pulse');
+            void cameraCountdown.offsetWidth; // Reflow reset animation
+            
+            let counter = 3;
+            cameraCountdown.textContent = counter;
+            cameraCountdown.classList.add('pulse');
+
+            const countdownInterval = setInterval(() => {
+                counter--;
+                if (counter > 0) {
+                    cameraCountdown.textContent = counter;
+                    cameraCountdown.classList.remove('pulse');
+                    void cameraCountdown.offsetWidth; // Reflow
+                    cameraCountdown.classList.add('pulse');
+                } else {
+                    clearInterval(countdownInterval);
+                    cameraCountdown.style.display = 'none';
+                    
+                    // Trigger Shutter Flash & Audio Synthesis
+                    playShutterSound();
+                    cameraFlash.classList.add('flash-active');
+
+                    setTimeout(() => {
+                        if (cameraActive && streamInstance) {
+                            // High-quality canvas render crop
+                            const canvas = document.createElement('canvas');
+                            canvas.width = video.videoWidth || 640;
+                            canvas.height = video.videoHeight || 480;
+                            const ctx = canvas.getContext('2d');
+                            // Horizontally flip captured picture to represent natural mirrors
+                            ctx.translate(canvas.width, 0);
+                            ctx.scale(-1, 1);
+                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            const selfieBase64 = canvas.toDataURL('image/jpeg', 0.9);
+                            localStorage.setItem('profileAvatarData', selfieBase64);
+                        } else {
+                            // Captured simulated photoportrait
+                            const simulatedUnsplash = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop";
+                            localStorage.setItem('profileAvatarData', simulatedUnsplash);
+                        }
+
+                        syncProfileAvatar();
+                        stopCameraStream();
+                        closeModal(cameraModal);
+                        showToast("✓ Foto profil berhasil dipotret & disimpan!");
+                        btnCapture.disabled = false;
+                    }, 400);
+                }
+            }, 1000);
+        });
+
+        // 4. RESET TO DEFAULT SILHOUETTE
+        optDelete.addEventListener('click', () => {
+            localStorage.removeItem('profileAvatarData');
+            syncProfileAvatar();
+            closeModal(avatarModal);
+            showToast("✓ Foto profil telah dihapus.");
+        });
+    };
+
+    // Initialize custom avatar settings
+    setupProfileAvatarChanger();
+    syncProfileAvatar();
 
     // 9. Initial Page Setup
     renderFoodCards();

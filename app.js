@@ -227,6 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const addToCart = (itemId) => {
         const itemObj = menuItems.find(item => item.id === itemId);
         if (!itemObj) return;
+        if (itemObj.available === false) {
+            showToast('Maaf, menu ini sedang habis!');
+            return;
+        }
 
         if (shoppingCart[itemId]) {
             shoppingCart[itemId].qty += 1;

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LaperCuy - Profil Pengguna</title>
     <meta name="description" content="Kelola informasi pribadi dan pantau sisa saldo dompet virtual SaldoCuy.">
-    <link rel="stylesheet" href="style.css?v=25.0">
+    <link rel="stylesheet" href="style.css?v=31.0">
 </head>
 
 <body>
@@ -73,20 +73,61 @@
                                     </div>
                                 </div>
                                 <h3 class="pvisual-name" id="profile-lbl-fullname">Niken Sitohang</h3>
-                                <span class="pvisual-username">@nikensthg03</span>
+                                <span class="pvisual-username" id="profile-lbl-username">nikensthg03@mail.com</span>
                             </div>
                             
                             <!-- Hidden File Input for Avatar Upload -->
                             <input type="file" id="avatar-file-input" style="display: none;" accept="image/*">
 
-                            <!-- Dompet SaldoCuy -->
-                            <div class="profile-dompet-card">
-                                <div class="dompet-top-row">
-                                    <span class="dompet-lbl"><i data-lucide="wallet" width="16" height="16" style="color: var(--clr-brand);"></i> SaldoCuy</span>
-                                    <strong class="dompet-val" id="profile-lbl-saldo">Rp 5.000</strong>
+                            <!-- Voucher yang dimiliki saat ini -->
+                            <div class="profile-voucher-card" style="background-color: var(--clr-brand); border-radius: var(--radius-lg); padding: 18px; color: #FFFFFF; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-md); margin-top: 16px; position: relative; width: 100%; box-sizing: border-box;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <span class="voucher-tag" style="background-color: #FFF2D4; color: #7A630E; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 50px; display: inline-flex; align-items: center; gap: 4px; text-transform: uppercase;">
+                                        <i data-lucide="flame" width="12" height="12" style="fill: #7A630E; color: #7A630E;"></i> Kamu raih!
+                                    </span>
                                 </div>
-                                <div class="dompet-divider"></div>
-                                <button class="btn btn-brand" id="btn-topup-saldo" style="padding: 10px; font-size: 12px; height: 38px;">Top Up Saldo</button>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                                        <span style="font-family: var(--font-heading); font-size: 26px; font-weight: 800; line-height: 1.1;">Rp 5.000</span>
+                                        <span style="font-size: 14px; font-weight: 700; white-space: nowrap;">Casback belanja 50.000</span>
+                                        <span style="font-size: 10px; color: rgba(255, 255, 255, 0.75); white-space: nowrap;">berlaku min.transaksi 50.000</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <button class="btn-claim-offer" data-promo="discount20" style="background-color: #FFFFFF; color: var(--clr-brand); border: none; border-radius: 50px; padding: 6px 20px; font-family: var(--font-heading); font-size: 12px; font-weight: 800; cursor: pointer; transition: var(--transition-fast);">Pakai</button>
+                                        <span style="font-size: 9px; color: rgba(255, 255, 255, 0.7); margin-top: 6px; white-space: nowrap;">kadaluarsa dalam 3 hari</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Profile Extra Menus -->
+                            <div class="profile-extra-menus" style="margin-top: 24px; display: flex; flex-direction: column; gap: 4px; width: 100%;">
+                                <div class="profile-menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid #EAEAEA; cursor: pointer;">
+                                    <div style="display: flex; align-items: center; gap: 14px;">
+                                        <i data-lucide="languages" width="20" height="20" style="color: var(--clr-text-main);"></i>
+                                        <span style="font-size: 15px; font-weight: 600; color: var(--clr-text-main);">Languages</span>
+                                    </div>
+                                    <button style="background-color: var(--clr-brand); color: #FFFFFF; border: none; border-radius: 50%; width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+                                        <i data-lucide="chevron-right" width="14" height="14"></i>
+                                    </button>
+                                </div>
+                                <div class="profile-menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid #EAEAEA; cursor: pointer;">
+                                    <div style="display: flex; align-items: center; gap: 14px;">
+                                        <i data-lucide="settings" width="20" height="20" style="color: var(--clr-text-main);"></i>
+                                        <span style="font-size: 15px; font-weight: 600; color: var(--clr-text-main);">Settings</span>
+                                    </div>
+                                    <button style="background-color: var(--clr-brand); color: #FFFFFF; border: none; border-radius: 50%; width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+                                        <i data-lucide="chevron-right" width="14" height="14"></i>
+                                    </button>
+                                </div>
+                                <div class="profile-menu-item" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid #EAEAEA; cursor: pointer;">
+                                    <div style="display: flex; align-items: center; gap: 14px;">
+                                        <i data-lucide="file-text" width="20" height="20" style="color: var(--clr-text-main);"></i>
+                                        <span style="font-size: 15px; font-weight: 600; color: var(--clr-text-main);">Terms & Privacy Policy</span>
+                                    </div>
+                                    <button style="background-color: var(--clr-brand); color: #FFFFFF; border: none; border-radius: 50%; width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+                                        <i data-lucide="chevron-right" width="14" height="14"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -507,7 +548,7 @@
     </div>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="app.js?v=25.0"></script>
+    <script src="app.js?v=31.0"></script>
 
 </body>
 

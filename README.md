@@ -1,30 +1,41 @@
-# LaperCuy
+<div align="center">
+  <img src="assets/lapercuylogo.png" alt="LaperCuy Logo" width="300">
+  
+  <h3><b> LaperCuy - Solusi Cerdas Pesan Makan di Kantin</b></h3>
+  <p><i>Gak perlu antre lama, tinggal klik, makanan tiba!</i></p>
+</div>
 
-LaperCuy adalah aplikasi pemesanan makanan kantin berbasis digital yang dirancang untuk mempermudah mahasiswa, dosen, dan civitas kampus dalam memesan makanan tanpa harus mengantre secara langsung. Melalui aplikasi ini, pengguna dapat melihat daftar menu yang tersedia, memilih makanan dan minuman, melakukan pemesanan, serta memantau status pesanan dengan lebih cepat dan praktis.
+---
 
-Aplikasi ini hadir sebagai solusi untuk mengurangi antrean panjang di kantin, menghemat waktu pengguna, serta meningkatkan efisiensi pelayanan bagi penjual. Dengan sistem pemesanan yang terintegrasi, pengguna dapat memesan makanan kapan saja dan mengambil pesanan ketika sudah siap, sehingga pengalaman membeli makanan menjadi lebih nyaman dan terorganisir.
+##  Tentang LaperCuy
 
-## Tujuan Proyek
-- Mengurangi antrean di kantin.
-- Mempermudah proses pemesanan makanan dan minuman.
-- Menghemat waktu pengguna.
-- Meningkatkan efisiensi pelayanan kantin.
-- Memberikan pengalaman pemesanan yang lebih modern dan praktis.
+**LaperCuy** adalah aplikasi pemesanan makanan kantin berbasis digital yang dirancang khusus untuk mempermudah civitas kampus (mahasiswa, dosen, dan staf). Kami hadir untuk mengatasi masalah klasik: **Antrean panjang yang membosankan.**
+
+Dengan LaperCuy, pengalaman makan di kampus jadi lebih modern, cepat, dan praktis. Cari menu favoritmu, pesan dari mana saja, dan ambil saat sudah siap!
 
 ## Fitur Utama
-- Melihat daftar menu makanan dan minuman.
-- Mencari dan memilih menu sesuai kebutuhan.
-- Menambahkan pesanan ke keranjang.
-- Melakukan checkout dan konfirmasi pesanan.
-- Melihat riwayat dan status pesanan.
-- Mengelola profil pengguna.
 
-## Target Pengguna
-- Mahasiswa Tingkat Satu yang belum m
-- Mahasiswa Tingkat Akhir
+*   📖 **Menu Digital Interaktif** – Lihat daftar makanan & minuman lengkap dengan gambar dan harga terbaru.
+*   🔍 **Pencarian Pintar** – Temukan makanan yang kamu mau dengan fitur filter kategori.
+*   🛒 **Keranjang Belanja** – Kelola pesananmu dengan mudah sebelum melakukan pembayaran.
+*   🧾 **Status Antrean Real-time** – Pantau apakah pesananmu sedang dimasak atau sudah siap diambil.
+*   👤 **Manajemen Profil** – Simpan informasi pribadi dan pantau saldo SaldoCuy milikmu.
 
 ## Teknologi yang Digunakan
-- HTML
-- CSS
-- JavaScript
-- Git & GitHub
+
+Proyek ini dibangun menggunakan kombinasi teknologi modern untuk performa terbaik:
+
+*   **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+*   **Backend:** Node.js, Express.js
+*   **Database:** PostgreSQL
+*   **Icons:** Lucide Icons
+*   **Version Control:** Git & GitHub
+
+## 📂 Struktur Folder Proyek
+
+```text
+LaperCuy/
+├── assets/             # Gambar, Logo, dan Aset Visual
+├── style.css           # Pengaturan UI/UX & Responsivitas
+├── index.html          # Halaman Utama
+└── app.js              # Interaksi Frontend

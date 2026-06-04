@@ -9,7 +9,7 @@
 
 ## Tentang LaperCuy
 
-**LaperCuy** adalah aplikasi pemesanan makanan kantin berbasis digital yang dirancang khusus untuk mempermudah civitas kampus (mahasiswa, dosen, dan staf). Kami hadir untuk mengatasi masalah klasik: **Antrean panjang yang membosankan.**
+**LaperCuy** adalah aplikasi pemesanan makanan kantin berbasis digital yang dirancang khusus untuk mempermudah civitas kampus. Pada proyek ini, diutamakan mahasiswa. Kami hadir untuk mengatasi masalah klasik: **Antrean panjang yang membosankan.**
 
 Dengan LaperCuy, pengalaman makan siang di kampus jadi lebih modern, cepat, dan praktis. Cari menu favoritmu, pesan dari mana saja, dan ambil saat sudah siap!
 

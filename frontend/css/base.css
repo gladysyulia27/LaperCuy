@@ -1,0 +1,82 @@
+/* ============================================================
+   LaperCuy — BASE
+   Variables, Reset, Body, Desktop Viewport
+   ============================================================ */
+
+/* Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Color Palette */
+    --clr-brand: #6E0B05;
+    --clr-brand-dark: #4A0502;
+    --clr-brand-light: #8F150D;
+    --clr-brand-translucent: rgba(110, 11, 5, 0.08);
+    --clr-cream-light: #FFFBF5;
+    --clr-cream: #FFF6E6;
+    --clr-cream-dark: #F5E5C9;
+
+    --clr-bg-page: #F8F9FA;
+    --clr-bg-card: #FFFFFF;
+    --clr-text-main: #2D2D2D;
+    --clr-text-muted: #757575;
+    --clr-text-light: #FFFFFF;
+
+    --clr-success: #2E7D32;
+    --clr-success-bg: #E8F5E9;
+    --clr-warning: #EF6C00;
+    --clr-warning-bg: #FFF3E0;
+
+    /* Typography */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* Spacing & Borders */
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 8px;
+    --radius-circle: 50%;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 16px 36px rgba(110, 11, 5, 0.08);
+    --shadow-drawer: -10px 0 40px rgba(0, 0, 0, 0.08);
+
+    /* Transitions */
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.15s ease;
+}
+
+/* Reset Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: var(--font-body);
+}
+
+body {
+    background-color: var(--clr-bg-page);
+    color: var(--clr-text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Desktop Viewport Wrapper */
+.desktop-viewport {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--clr-bg-page);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Global SPA Page Routing Utility */
+.hidden {
+    display: none !important;
+}

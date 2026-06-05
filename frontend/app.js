@@ -2189,5 +2189,205 @@ sidebarLinks.forEach(link => {
     else if ((currentPath === "" || currentPath === "index.html") && linkHref === "index.html") {
         link.classList.add('active');
     }
+
+// ============================================================
+// LIVE SEARCH BAR — Real-time search dari API /api/foods?q=
+// ============================================================
+const initSearchBar = (inputEl) => {
+    if (!inputEl) return;
+
+    const wrapper = inputEl.closest('.header-search') || inputEl.closest('.mobile-search-bar') || inputEl.parentElement;
+    wrapper.style.position = 'relative';
+
+    const dropdown = document.createElement('div');
+    dropdown.className = 'search-dropdown';
+    wrapper.appendChild(dropdown);
+
+    let debounceTimer = null;
+    let currentQuery  = '';
+    let highlightedIndex = -1;
+
+    const highlightText = (text, query) => {
+        if (!query) return text;
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark class="search-highlight">$1</mark>');
+    };
+
+    const getResultItems = () => dropdown.querySelectorAll('.search-result-item');
+
+    const showDropdown = (foods, query) => {
+        dropdown.innerHTML = '';
+        highlightedIndex = -1;
+
+        if (!foods.length) {
+            dropdown.innerHTML = `<div class="search-empty"><i data-lucide="search-x" width="18" height="18"></i><span>Tidak ada hasil untuk "<strong>${query}</strong>"</span></div>`;
+            if (window.lucide) window.lucide.createIcons();
+            dropdown.classList.add('active');
+            return;
+        }
+
+        foods.slice(0, 8).forEach(food => {
+            const item = document.createElement('div');
+            item.className = 'search-result-item';
+            item.setAttribute('data-food-id', food.food_id || food.id);
+
+            const habis = food.is_available === false ? '<span class="search-result-badge-habis">Habis</span>' : '';
+            item.innerHTML = `
+                <img src="${food.img || 'assets/default.png'}" class="search-result-img" alt="${food.name}" onerror="this.src='assets/default.png'">
+                <div class="search-result-info">
+                    <span class="search-result-name">${highlightText(food.name, query)}</span>
+                    <span class="search-result-cat">${food.category || ''} ${habis}</span>
+                </div>
+                <span class="search-result-price">Rp ${Number(food.price).toLocaleString('id-ID')}</span>`;
+
+            item.addEventListener('mousedown', e => { e.preventDefault(); goToResult(food.name); });
+            dropdown.appendChild(item);
+        });
+
+        const footer = document.createElement('div');
+        footer.className = 'search-dropdown-footer';
+        footer.innerHTML = `<i data-lucide="search" width="13" height="13"></i> Tekan <kbd>Enter</kbd> untuk semua hasil`;
+        dropdown.appendChild(footer);
+
+        if (window.lucide) window.lucide.createIcons();
+        dropdown.classList.add('active');
+    };
+
+    const hideDropdown = () => { dropdown.classList.remove('active'); highlightedIndex = -1; };
+
+    const goToResult = (name) => {
+        hideDropdown();
+        inputEl.value = '';
+        window.location.href = `menu.html?q=${encodeURIComponent(name)}`;
+    };
+
+    const doSearch = async (query) => {
+        currentQuery = query;
+        if (!query || query.trim().length < 2) { hideDropdown(); return; }
+
+        dropdown.innerHTML = '<div class="search-loading"><span class="search-spinner"></span>Mencari...</div>';
+        dropdown.classList.add('active');
+
+        try {
+            const res = await fetch(`${API_BASE}/foods?q=${encodeURIComponent(query.trim())}`);
+            const data = await res.json();
+            if (currentQuery !== query) return;
+            showDropdown(data.foods || [], query.trim());
+        } catch {
+            const local = menuItems.filter(f =>
+                f.name.toLowerCase().includes(query.toLowerCase()) ||
+                (f.desc || f.description || '').toLowerCase().includes(query.toLowerCase())
+            );
+            if (currentQuery !== query) return;
+            showDropdown(local, query.trim());
+        }
+    };
+
+    inputEl.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        const q = inputEl.value.trim();
+        if (q.length < 2) { hideDropdown(); return; }
+        debounceTimer = setTimeout(() => doSearch(q), 300);
+    });
+
+    inputEl.addEventListener('keydown', e => {
+        const items = getResultItems();
+        if (e.key === 'ArrowDown') { e.preventDefault(); if (!items.length) return; items[highlightedIndex]?.classList.remove('highlighted'); highlightedIndex = (highlightedIndex + 1) % items.length; items[highlightedIndex].classList.add('highlighted'); items[highlightedIndex].scrollIntoView({ block: 'nearest' }); return; }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); if (!items.length) return; items[highlightedIndex]?.classList.remove('highlighted'); highlightedIndex = (highlightedIndex - 1 + items.length) % items.length; items[highlightedIndex].classList.add('highlighted'); items[highlightedIndex].scrollIntoView({ block: 'nearest' }); return; }
+        if (e.key === 'Escape')    { hideDropdown(); inputEl.blur(); return; }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (highlightedIndex >= 0 && items[highlightedIndex]) { goToResult(items[highlightedIndex].querySelector('.search-result-name')?.textContent || inputEl.value); return; }
+            const q = inputEl.value.trim();
+            if (q) { hideDropdown(); window.location.href = `menu.html?q=${encodeURIComponent(q)}`; }
+        }
+    });
+
+    inputEl.addEventListener('focus', () => { const q = inputEl.value.trim(); if (q.length >= 2) doSearch(q); });
+    document.addEventListener('click', e => { if (!wrapper.contains(e.target)) hideDropdown(); });
+};
+
+// Inisialisasi kedua search bar (desktop + mobile)
+initSearchBar(document.getElementById('search-input'));
+initSearchBar(document.getElementById('mobile-search-input'));
+
+// ── Jika halaman menu.html dengan ?q= di URL: filter grid dengan hasil pencarian
+const _urlQ = new URLSearchParams(window.location.search).get('q');
+if (_urlQ && document.getElementById('explore-menu-grid')) {
+    const si  = document.getElementById('search-input');
+    const msi = document.getElementById('mobile-search-input');
+    if (si)  si.value  = _urlQ;
+    if (msi) msi.value = _urlQ;
+
+    const titleEl = document.getElementById('explore-cat-title');
+    const descEl  = document.getElementById('explore-cat-desc');
+    if (titleEl) titleEl.textContent = `Hasil: "${_urlQ}"`;
+    if (descEl)  descEl.textContent  = 'Menu yang cocok dengan pencarianmu';
+    document.querySelectorAll('.explore-cat-pill').forEach(p => p.classList.remove('active'));
+
+    const renderSearchGrid = async (q) => {
+        const grid = document.getElementById('explore-menu-grid');
+        if (!grid) return;
+
+        try {
+            const res  = await fetch(`${API_BASE}/foods?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            const results = normalizeFoods(data.foods || []);
+
+            if (!results.length) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--clr-text-muted);">
+                        <i data-lucide="search-x" width="42" height="42" style="opacity:.35;margin-bottom:14px;display:block;margin-inline:auto;"></i>
+                        <p style="font-size:16px;font-weight:600;margin-bottom:8px;">Tidak ada menu untuk "<strong>${q}</strong>"</p>
+                        <a href="menu.html" style="color:var(--clr-brand);font-size:13px;text-decoration:underline;">← Lihat semua menu</a>
+                    </div>`;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            grid.innerHTML = '';
+            results.forEach(food => {
+                const inCart   = shoppingCart[food.id];
+                const qty      = inCart ? inCart.qty : 0;
+                const isUnavail = food.available === false;
+
+                const card = document.createElement('div');
+                card.className = `explore-menu-card${isUnavail ? ' unavailable' : ''}`;
+                card.innerHTML = `
+                    <div class="explore-card-img-wrapper">
+                        <img src="${food.img}" class="explore-card-img" alt="${food.name}" onerror="this.src='assets/default.png'">
+                        ${food.badge ? `<span class="food-badge ${food.badge.includes('%') ? 'badge-discount' : 'badge-bestseller'}">${food.badge}</span>` : ''}
+                        ${isUnavail ? '<div class="explore-card-unavailable-overlay"><span>Habis</span></div>' : ''}
+                    </div>
+                    <div class="explore-card-body">
+                        <h4 class="explore-card-name">${food.name}</h4>
+                        <p class="explore-card-desc">${food.desc || food.description || ''}</p>
+                        <div class="explore-card-footer">
+                            <span class="explore-card-price">Rp ${food.price.toLocaleString('id-ID')}</span>
+                            ${isUnavail
+                                ? '<span style="font-size:11px;color:#E85D04;font-weight:600;">Habis</span>'
+                                : qty > 0
+                                    ? `<div class="explore-qty-control">
+                                        <button class="explore-qty-btn explore-qty-minus" data-food-id="${food.id}"><i data-lucide="minus" width="12" height="12"></i></button>
+                                        <span class="explore-qty-val">${qty}</span>
+                                        <button class="explore-qty-btn explore-qty-plus"  data-food-id="${food.id}"><i data-lucide="plus"  width="12" height="12"></i></button>
+                                       </div>`
+                                    : `<button class="explore-add-btn" data-food-id="${food.id}"><i data-lucide="plus" width="14" height="14"></i></button>`}
+                        </div>
+                    </div>`;
+                grid.appendChild(card);
+            });
+
+            grid.querySelectorAll('.explore-add-btn, .explore-qty-plus').forEach(btn => btn.addEventListener('click', () => addToCart(btn.getAttribute('data-food-id'))));
+            grid.querySelectorAll('.explore-qty-minus').forEach(btn => btn.addEventListener('click', () => subtractFromCart(btn.getAttribute('data-food-id'))));
+
+            if (window.lucide) window.lucide.createIcons();
+        } catch (e) {
+            console.error('[Search URL] Error:', e);
+        }
+    };
+
+    setTimeout(() => renderSearchGrid(_urlQ), 250);
+}
 });
 });

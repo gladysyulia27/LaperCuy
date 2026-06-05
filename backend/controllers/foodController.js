@@ -7,11 +7,18 @@ const db = require('../config/db');
 // ============================================================
 exports.getAllFoods = async (req, res) => {
   try {
-    const { category, tag, price_max } = req.query;
+    const { category, tag, price_max, q } = req.query;
 
     let query = 'SELECT * FROM foods WHERE 1=1';
     const params = [];
     let paramIdx = 1;
+
+    // ── Pencarian teks: cocokkan nama atau deskripsi (case-insensitive)
+    if (q && q.trim() !== '') {
+      query += ` AND (name ILIKE $${paramIdx} OR description ILIKE $${paramIdx})`;
+      params.push(`%${q.trim()}%`);
+      paramIdx++;
+    }
 
     if (category && category !== 'all') {
       query += ` AND category = $${paramIdx++}`;

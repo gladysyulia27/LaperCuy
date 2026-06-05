@@ -4075,8 +4075,199 @@ body {
         justify-content: space-between;
     }
 
+
     /* Sembunyikan navigasi desktop di header saat mobile */
     .nav-menu, .header-search {
         display: none;
     }
 }
+
+/* ============================================================
+   SEARCH DROPDOWN — Live Search Results
+   ============================================================ */
+
+.search-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(110, 11, 5, 0.08);
+    border: 1px solid rgba(110, 11, 5, 0.08);
+    z-index: 9999;
+    overflow: hidden;
+    max-height: 420px;
+    overflow-y: auto;
+    animation: searchDropIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-dropdown.active {
+    display: block;
+}
+
+@keyframes searchDropIn {
+    from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Scrollbar styling */
+.search-dropdown::-webkit-scrollbar { width: 4px; }
+.search-dropdown::-webkit-scrollbar-track { background: transparent; }
+.search-dropdown::-webkit-scrollbar-thumb { background: #EAEAEA; border-radius: 4px; }
+
+/* Result Items */
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    border-bottom: 1px solid #F5F5F5;
+}
+
+.search-result-item:last-of-type {
+    border-bottom: none;
+}
+
+.search-result-item:hover,
+.search-result-item.highlighted {
+    background-color: rgba(110, 11, 5, 0.04);
+}
+
+.search-result-img {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid #EAEAEA;
+    flex-shrink: 0;
+}
+
+.search-result-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.search-result-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1A1A1A;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-result-cat {
+    font-size: 11px;
+    color: #9E9E9E;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.search-result-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--clr-brand);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.search-result-badge-habis {
+    display: inline-block;
+    background: #FFF3E0;
+    color: #E85D04;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Highlight match */
+.search-highlight {
+    background: rgba(110, 11, 5, 0.12);
+    color: var(--clr-brand);
+    border-radius: 2px;
+    padding: 0 1px;
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Footer hint */
+.search-dropdown-footer {
+    padding: 10px 16px;
+    font-size: 11px;
+    color: #9E9E9E;
+    background: #FAFAFA;
+    border-top: 1px solid #F0F0F0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.search-dropdown-footer kbd {
+    background: #EFEFEF;
+    border: 1px solid #D0D0D0;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 10px;
+    font-family: var(--font-body);
+    color: #555;
+}
+
+/* Loading state */
+.search-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    font-size: 13px;
+    color: #9E9E9E;
+}
+
+.search-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #EAEAEA;
+    border-top-color: var(--clr-brand);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.search-empty {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 16px;
+    font-size: 13px;
+    color: #9E9E9E;
+}
+
+.search-empty strong {
+    color: #555;
+}
+
+/* Mobile search bar gets dropdown too */
+.mobile-search-bar {
+    position: relative;
+}
+
+.mobile-search-bar .search-dropdown {
+    min-width: 280px;
+}

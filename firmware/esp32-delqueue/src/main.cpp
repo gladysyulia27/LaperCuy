@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <WiFiManager.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
 #include <Wire.h>
@@ -69,8 +70,7 @@ void beepReady() {
   digitalWrite(PIN_BUZZER, LOW);
 }
 
-HTTPClient beginHttp(const String &path, WiFiClientSecure &secure, WiFiClient &plain) {
-  HTTPClient http;
+void configureHttp(HTTPClient &http, const String &path, WiFiClientSecure &secure, WiFiClient &plain) {
   String base = String(API_BASE_URL);
   if (base.startsWith("https://")) {
     secure.setInsecure();
@@ -81,23 +81,40 @@ HTTPClient beginHttp(const String &path, WiFiClientSecure &secure, WiFiClient &p
   http.setTimeout(HTTP_TIMEOUT_MS);
   http.addHeader("X-Device-Key", DEVICE_API_KEY);
   http.addHeader("X-Device-ID", DEVICE_ID);
-  return http;
 }
 
 void connectWifi() {
-  showLines("DELQUEUE", "CONNECT WIFI");
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+  WiFiManager wm;
+  wm.setConnectTimeout(20);
+  wm.setConfigPortalBlocking(true);
+
+  if (digitalRead(PIN_PREV_BUTTON) == LOW && digitalRead(PIN_NEXT_BUTTON) == LOW) {
+    showLines("RESET WIFI", "TAHAN...");
+    delay(2000);
+    if (digitalRead(PIN_PREV_BUTTON) == LOW && digitalRead(PIN_NEXT_BUTTON) == LOW) {
+      wm.resetSettings();
+      showLines("WIFI DIHAPUS", "SETUP ULANG");
+      delay(1200);
+    }
   }
+
+  showLines("SETUP WIFI", "DelQueue-Setup");
+  if (!wm.autoConnect("DelQueue-Setup")) {
+    showLines("WIFI GAGAL", "RESTART");
+    delay(1500);
+    ESP.restart();
+  }
+
+  showLines("WIFI OK", WiFi.localIP().toString());
+  delay(1000);
   configTime(0, 0, "pool.ntp.org", "time.google.com");
 }
 
 void heartbeat() {
   WiFiClientSecure secure;
   WiFiClient plain;
-  HTTPClient http = beginHttp("/api/device/heartbeat", secure, plain);
+  HTTPClient http;
+  configureHttp(http, "/api/device/heartbeat", secure, plain);
   http.addHeader("Content-Type", "application/json");
   StaticJsonDocument<192> doc;
   doc["deviceId"] = DEVICE_ID;
@@ -118,7 +135,8 @@ void createCode() {
 
   WiFiClientSecure secure;
   WiFiClient plain;
-  HTTPClient http = beginHttp("/api/device/sessions", secure, plain);
+  HTTPClient http;
+  configureHttp(http, "/api/device/sessions", secure, plain);
   http.addHeader("Content-Type", "application/json");
   http.addHeader("X-Request-ID", pendingRequestId);
   int status = http.POST("{\"firmwareVersion\":\"1.0.0\"}");
@@ -147,7 +165,8 @@ void pollDisplay() {
 
   WiFiClientSecure secure;
   WiFiClient plain;
-  HTTPClient http = beginHttp("/api/device/display-state", secure, plain);
+  HTTPClient http;
+  configureHttp(http, "/api/device/display-state", secure, plain);
   int status = http.GET();
   if (status < 200 || status >= 300) {
     showLines("SERVER OFFLINE", "TUNGGU");

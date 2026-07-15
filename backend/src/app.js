@@ -452,7 +452,7 @@ app.post('/api/orders', studentAuth, asyncHandler(async (req, res) => {
     const order = await client.query(
       `INSERT INTO orders (order_code, session_id, subtotal, discount, grand_total, payment_method, status,
                            queue_weight, estimated_wait_minutes, estimated_ready_at)
-       VALUES ($1,$2,$3,0,$3,'pay_at_pickup','QUEUED',$4,$5,CURRENT_TIMESTAMP + ($5 || ' minutes')::interval)
+       VALUES ($1,$2,$3,0,$3,'pay_at_pickup','QUEUED',$4,$5,CURRENT_TIMESTAMP + ($5::int * INTERVAL '1 minute'))
        RETURNING *`,
       [orderCode, req.student.sessionId, subtotal, weight, estimated]
     );

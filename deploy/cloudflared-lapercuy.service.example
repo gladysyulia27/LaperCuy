@@ -1,0 +1,13 @@
+[Unit]
+Description=Cloudflare Tunnel for LaperCuy DelQueue
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/cloudflared tunnel --config /etc/cloudflared/lapercuy.yml run
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+tunnel: <TUNNEL-UUID>
+credentials-file: /etc/cloudflared/<TUNNEL-UUID>.json
+
+ingress:
+  - hostname: lapercuy.yogitrim.my.id
+    service: http://127.0.0.1:8092
+  - service: http_status:404

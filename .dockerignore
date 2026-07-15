@@ -1,0 +1,10 @@
+.git
+node_modules
+backend/node_modules
+.env
+**/.env
+firmware/**/include/secrets.h
+deploy/backups
+*.log
+database/*.dump
+database/*.backup

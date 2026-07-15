@@ -1,49 +1,45 @@
-<div align="center">
-  <img src="frontend/assets/lapercuylogo.png" alt="LaperCuy Logo" width="300">
-  
-  <h3><b>LaperCuy - Solusi Cerdas Pesan Makan di Kantin</b></h3>
-  <p><i>Gak perlu antre lama, tinggal klik, makanan tiba!</i></p>
-</div>
+# LaperCuy - DelQueue Smart Canteen System
 
----
+LaperCuy is now a smart canteen queue system for a physical ESP32 queue terminal, student web ordering, kitchen dashboard, PostgreSQL, and Docker deployment behind Cloudflare Tunnel.
 
-## Tentang LaperCuy
+Students do not register or log in with email/password. They press the physical DelQueue button, receive a temporary code such as `ABC-123`, claim it in the web app, order food, and pay at the canteen when picking up the order.
 
-**LaperCuy** adalah aplikasi pemesanan makanan kantin berbasis digital yang dirancang khusus untuk mempermudah civitas kampus. Pada proyek ini, diutamakan mahasiswa. Kami hadir untuk mengatasi masalah klasik: **Antrean panjang yang membosankan.**
+## Main Components
 
-Dengan LaperCuy, pengalaman makan siang di kampus jadi lebih modern, cepat, dan praktis. Cari menu favoritmu, pesan dari mana saja, dan ambil saat sudah siap!
+- Student web app: `/index.html`, `/menu.html`, `/checkout.html`, `/orders.html`
+- Kitchen dashboard: `/dapur/login.html`
+- Backend API: Node.js, Express, PostgreSQL, Socket.IO
+- Device API: authenticated REST endpoints for ESP32
+- Firmware: `firmware/esp32-delqueue`
+- Deployment: Docker Compose in `deploy/docker-compose.yml`
 
-## Fitur Utama
+## Local Development
 
-*   📖 **Menu Digital Interaktif** – Lihat daftar makanan & minuman lengkap dengan gambar dan harga terbaru.
-*   🔍 **Pencarian Pintar** – Temukan makanan yang kamu mau dengan fitur filter kategori.
-*   🛒 **Keranjang Belanja** – Kelola pesananmu dengan mudah sebelum melakukan pembayaran.
-*   🧾 **Status Antrean Real-time** – Pantau apakah pesananmu sedang dimasak atau sudah siap diambil.
-*   👤 **Manajemen Profil** – Simpan informasi pribadi dan pantau saldo SaldoCuy milikmu.
+```sh
+cd backend
+cp .env.example .env
+npm install
+npm run migrate
+npm run seed
+npm run dev
+```
 
-## Teknologi yang Digunakan
+Open `http://localhost:3000`.
 
-Proyek ini dibangun menggunakan kombinasi teknologi modern untuk performa terbaik:
+## Core Scripts
 
-*   **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-*   **Backend:** Node.js, Express.js
-*   **Database:** PostgreSQL
-*   **Icons:** Lucide Icons
-*   **Version Control:** Git & GitHub
+- `npm run migrate` applies versioned SQL migrations.
+- `npm run seed` inserts menu data and the first staff account from `ADMIN_USERNAME` and `ADMIN_PASSWORD`.
+- `npm run start` starts the production server after migrations.
+- `npm test` runs backend tests when configured for the local database.
+- `scripts/smoke-test.sh` exercises health, device code, claim, cart, order, staff status, and device ready state.
 
-## Struktur Folder Proyek
+## Deployment
 
-```text
-LaperCuy/
-├── backend/            # Server logic, API routes, dan inisialisasi server
-│   └── setup-db.js     # Script untuk setup data awal database
-├── database/           # Kumpulan script SQL dan skema database
-│   ├── lapercuy.sql
-│   └── schema_postgresql.sql
-└── frontend/           # Seluruh aset tampilan (Client-side)
-    ├── assets/         # Gambar, Logo, dan Aset Visual
-    ├── index.html      # Halaman utama (Beranda)
-    ├── login.html      # Halaman masuk akun
-    ├── register.html   # Halaman daftar akun baru
-    ├── style.css       # Pengaturan UI/UX & Responsivitas
-    └── app.js          # Logika interaksi Frontend
+Production uses Docker Compose and binds the app only to `127.0.0.1:8092`. Public HTTPS should be provided by Cloudflare Tunnel for `lapercuy.yogitrim.my.id`.
+
+See [deploy/DEPLOYMENT.md](deploy/DEPLOYMENT.md).
+
+## Security Notes
+
+Never commit `.env`, `firmware/esp32-delqueue/include/secrets.h`, Cloudflare credentials, database dumps, SSH keys, or production backups.

@@ -37,9 +37,30 @@ void showLines(const String &a, const String &b) {
 }
 
 bool pressed(int pin) {
-  static unsigned long last[40] = {0};
-  if (digitalRead(pin) == LOW && millis() - last[pin] > 350) {
-    last[pin] = millis();
+  static bool initialized[40] = {false};
+  static int lastState[40] = {HIGH};
+  static unsigned long changedAt[40] = {0};
+
+  int state = digitalRead(pin);
+  if (!initialized[pin]) {
+    initialized[pin] = true;
+    lastState[pin] = state;
+    changedAt[pin] = millis();
+    return false;
+  }
+
+  if (state != lastState[pin]) {
+    lastState[pin] = state;
+    changedAt[pin] = millis();
+    return false;
+  }
+
+  if (state == LOW && millis() - changedAt[pin] > 80) {
+    while (digitalRead(pin) == LOW) {
+      delay(10);
+    }
+    changedAt[pin] = millis();
+    lastState[pin] = HIGH;
     return true;
   }
   return false;

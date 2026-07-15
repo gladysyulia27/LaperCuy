@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dapur | LaperCuy DelQueue</title>
+  <link rel="stylesheet" href="/delqueue.css">
+  <style>
+    .kitchen-board { display: grid; grid-template-columns: repeat(4, minmax(220px, 1fr)); gap: 14px; align-items: start; }
+    .column { display: grid; gap: 10px; }
+    .column h2 { font-size: 17px; margin: 0; }
+    .order-card .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    @media (max-width: 1000px) { .kitchen-board { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 620px) { .kitchen-board { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/dapur/index.html"><img src="/assets/lapercuylogo.png" alt="LaperCuy">Dapur</a>
+      <nav class="nav">
+        <button id="refresh" type="button">Refresh</button>
+        <button id="logout" type="button">Keluar</button>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="toolbar">
+      <div>
+        <h1>Pesanan Dapur</h1>
+        <p id="connection" class="muted">Menghubungkan...</p>
+      </div>
+      <div class="panel">
+        <div class="split"><span>Antrean aktif</span><strong id="active-count">0</strong></div>
+      </div>
+    </section>
+
+    <section class="kitchen-board">
+      <div class="column"><h2>Pesanan Baru</h2><div id="col-QUEUED" class="grid"></div></div>
+      <div class="column"><h2>Diterima</h2><div id="col-ACCEPTED" class="grid"></div></div>
+      <div class="column"><h2>Sedang Diproses</h2><div id="col-PREPARING" class="grid"></div></div>
+      <div class="column"><h2>Siap Diambil</h2><div id="col-READY" class="grid"></div></div>
+    </section>
+
+    <section class="panel" style="margin-top:20px">
+      <h2>Pengaturan Antrean</h2>
+      <div class="settings-grid">
+        <label><input id="orders-open" type="checkbox"> Pesanan dibuka</label>
+        <label>Maks antrean aktif <input id="max-active" class="search" type="number" min="1"></label>
+        <label>Parallel dapur <input id="parallelism" class="search" type="number" min="1"></label>
+        <label>Pengumuman <input id="announcement" class="search"></label>
+      </div>
+      <button id="save-settings" class="btn primary" type="button">Simpan Pengaturan</button>
+    </section>
+
+    <section class="panel" style="margin-top:20px">
+      <h2>Stok Menu</h2>
+      <div id="foods" class="grid"></div>
+    </section>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/dapur/dapur.js"></script>
+  <script>initKitchen();</script>
+</body>
+</html>

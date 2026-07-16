@@ -1,0 +1,11 @@
+.env
+*.log
+node_modules/
+backend/node_modules/
+.venv-platformio/
+firmware/esp32-delqueue/.pio/
+firmware/esp32-delqueue/include/secrets.h
+deploy/backups/
+*.dump
+*.backup
+.DS_Store

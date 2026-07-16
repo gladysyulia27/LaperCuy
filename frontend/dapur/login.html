@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Dapur | LaperCuy</title>
+  <link rel="stylesheet" href="/delqueue.css">
+</head>
+<body>
+  <main class="container hero">
+    <section class="hero-copy">
+      <h1>Dashboard Dapur</h1>
+      <p>Kelola pesanan, stok, dan status antrean DelQueue.</p>
+    </section>
+    <section class="panel">
+      <h2>Masuk Staff</h2>
+      <form id="staff-login" class="grid">
+        <input class="search" name="username" placeholder="Username" autocomplete="username" required>
+        <input class="search" name="password" placeholder="Password" type="password" autocomplete="current-password" required>
+        <button class="btn primary" type="submit">Masuk</button>
+      </form>
+      <div id="message" class="toast"></div>
+    </section>
+  </main>
+  <script src="/dapur/dapur.js"></script>
+  <script>initStaffLogin();</script>
+</body>
+</html>

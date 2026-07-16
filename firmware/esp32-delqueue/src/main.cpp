@@ -27,6 +27,12 @@ unsigned long codeShownAt = 0;
 bool requestInFlight = false;
 String visibleCode = "";
 String pendingRequestId = "";
+volatile bool issueButtonFlag = false;
+volatile bool prevButtonFlag = false;
+volatile bool nextButtonFlag = false;
+volatile uint32_t lastIssueButtonUs = 0;
+volatile uint32_t lastPrevButtonUs = 0;
+volatile uint32_t lastNextButtonUs = 0;
 
 void showLines(const String &a, const String &b) {
   lcd.clear();
@@ -36,34 +42,36 @@ void showLines(const String &a, const String &b) {
   lcd.print(b.substring(0, 16));
 }
 
-bool pressed(int pin) {
-  static bool initialized[40] = {false};
-  static int lastReading[40] = {HIGH};
-  static int stableState[40] = {HIGH};
-  static unsigned long changedAt[40] = {0};
-
-  int reading = digitalRead(pin);
-  if (!initialized[pin]) {
-    initialized[pin] = true;
-    lastReading[pin] = reading;
-    stableState[pin] = reading;
-    changedAt[pin] = millis();
-    return false;
+void IRAM_ATTR onIssueButton() {
+  uint32_t now = micros();
+  if (now - lastIssueButtonUs > 120000) {
+    issueButtonFlag = true;
+    lastIssueButtonUs = now;
   }
+}
 
-  if (reading != lastReading[pin]) {
-    lastReading[pin] = reading;
-    changedAt[pin] = millis();
-    return false;
+void IRAM_ATTR onPrevButton() {
+  uint32_t now = micros();
+  if (now - lastPrevButtonUs > 120000) {
+    prevButtonFlag = true;
+    lastPrevButtonUs = now;
   }
+}
 
-  if (reading != stableState[pin] && millis() - changedAt[pin] > 60) {
-    stableState[pin] = reading;
-    changedAt[pin] = millis();
-    return stableState[pin] == LOW;
+void IRAM_ATTR onNextButton() {
+  uint32_t now = micros();
+  if (now - lastNextButtonUs > 120000) {
+    nextButtonFlag = true;
+    lastNextButtonUs = now;
   }
+}
 
-  return false;
+bool consumeButton(volatile bool &flag) {
+  noInterrupts();
+  bool value = flag;
+  flag = false;
+  interrupts();
+  return value;
 }
 
 String requestId() {
@@ -230,6 +238,9 @@ void setup() {
   pinMode(PIN_ISSUE_BUTTON, INPUT_PULLUP);
   pinMode(PIN_PREV_BUTTON, INPUT_PULLUP);
   pinMode(PIN_NEXT_BUTTON, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(PIN_ISSUE_BUTTON), onIssueButton, FALLING);
+  attachInterrupt(digitalPinToInterrupt(PIN_PREV_BUTTON), onPrevButton, FALLING);
+  attachInterrupt(digitalPinToInterrupt(PIN_NEXT_BUTTON), onNextButton, FALLING);
   pinMode(PIN_BUZZER, OUTPUT);
   digitalWrite(PIN_BUZZER, LOW);
   Wire.begin(PIN_SDA, PIN_SCL);
@@ -242,12 +253,12 @@ void setup() {
 }
 
 void loop() {
-  if (pressed(PIN_ISSUE_BUTTON)) createCode();
-  if (pressed(PIN_PREV_BUTTON) && readyCount > 0) {
+  if (consumeButton(issueButtonFlag)) createCode();
+  if (consumeButton(prevButtonFlag) && readyCount > 0) {
     readyIndex = (readyIndex + readyCount - 1) % readyCount;
     showLines("PESANAN READY", readyOrders[readyIndex].code);
   }
-  if (pressed(PIN_NEXT_BUTTON) && readyCount > 0) {
+  if (consumeButton(nextButtonFlag) && readyCount > 0) {
     readyIndex = (readyIndex + 1) % readyCount;
     showLines("PESANAN READY", readyOrders[readyIndex].code);
   }

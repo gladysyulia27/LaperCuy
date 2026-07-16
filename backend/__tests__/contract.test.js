@@ -25,6 +25,13 @@ test('backend uses non-ambiguous ABC-123 code character set', () => {
   assert.equal(chars.includes('1'), false);
 });
 
+test('session claim can be reissued for active orders until pickup', () => {
+  const app = fs.readFileSync(path.join(root, 'backend/src/app.js'), 'utf8');
+  assert.match(app, /canReclaimActiveOrder = session\.status === 'ORDERED' && orderStatus && orderStatus !== 'PICKED_UP'/);
+  assert.match(app, /student_token_jti = \$2/);
+  assert.match(app, /Pesanan sudah diambil/);
+});
+
 test('examples keep secrets as placeholders only', () => {
   const env = fs.readFileSync(path.join(root, '.env.example'), 'utf8');
   const secrets = fs.readFileSync(path.join(root, 'firmware/esp32-delqueue/include/secrets.example.h'), 'utf8');

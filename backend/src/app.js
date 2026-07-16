@@ -277,18 +277,28 @@ app.post('/api/sessions/claim', claimLimiter, asyncHandler(async (req, res) => {
       await client.query('ROLLBACK');
       return res.status(404).json({ success: false, message: 'Kode tidak ditemukan.' });
     }
-    if (session.status !== 'ISSUED') {
+    const order = await client.query(
+      'SELECT id, status FROM orders WHERE session_id = $1 ORDER BY id DESC LIMIT 1',
+      [session.id]
+    );
+    const orderStatus = order.rows[0]?.status || null;
+    const canReclaimActiveOrder = session.status === 'ORDERED' && orderStatus && orderStatus !== 'PICKED_UP';
+    const canClaimSession = session.status === 'ISSUED' || session.status === 'CLAIMED' || canReclaimActiveOrder;
+    if (!canClaimSession) {
       await client.query('ROLLBACK');
-      return res.status(409).json({ success: false, message: 'Kode sudah digunakan atau tidak aktif.' });
+      return res.status(409).json({ success: false, message: orderStatus === 'PICKED_UP' ? 'Pesanan sudah diambil.' : 'Kode sudah tidak aktif.' });
     }
-    if (new Date(session.expires_at) < new Date()) {
+    if (!canReclaimActiveOrder && new Date(session.expires_at) < new Date()) {
       await client.query('ROLLBACK');
       return res.status(410).json({ success: false, message: 'Kode sudah kedaluwarsa.' });
     }
 
     const { token, jti } = signStudent(session);
     const updated = await client.query(
-      `UPDATE queue_sessions SET status = 'CLAIMED', claimed_at = CURRENT_TIMESTAMP, student_token_jti = $2
+      `UPDATE queue_sessions
+          SET status = CASE WHEN status = 'ISSUED' THEN 'CLAIMED' ELSE status END,
+              claimed_at = COALESCE(claimed_at, CURRENT_TIMESTAMP),
+              student_token_jti = $2
        WHERE id = $1 RETURNING *`,
       [session.id, jti]
     );
